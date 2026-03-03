@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: infra
+spec:
+  project: infra
+
+  source:
+    repoURL: https://charts.longhorn.io
+    targetRevision: 1.11.0
+    chart: longhorn
+    helm:
+      values: |
+        persistence.defaultClassReplicaCount: 1
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
