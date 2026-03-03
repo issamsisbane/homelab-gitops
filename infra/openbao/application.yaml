@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openbao
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: infra
+spec:
+  project: infra
+
+  source:
+    repoURL: https://openbao.github.io/openbao-helm
+    targetRevision: 0.25.6
+    chart: openbao
+
+  destination:
+    server: https://kubernetes.default.svc
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
