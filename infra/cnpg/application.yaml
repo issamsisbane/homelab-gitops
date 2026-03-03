@@ -8,7 +8,7 @@ metadata:
   labels:
     workload-type: infra
 spec:
-  project: infrastructure
+  project: infra
 
   source:
     repoURL: https://cloudnative-pg.github.io/charts
