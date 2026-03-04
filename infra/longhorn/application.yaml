@@ -16,7 +16,8 @@ spec:
     chart: longhorn
     helm:
       values: |
-        persistence.defaultClassReplicaCount: 1
+        persistence:
+          defaultClassReplicaCount: 1
 
   destination:
     server: https://kubernetes.default.svc
