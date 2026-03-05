@@ -63,7 +63,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: authentik-cnpg-app
-                  key: database
+                  key: dbname
             - name: AUTHENTIK_POSTGRESQL__USER
               valueFrom:
                 secretKeyRef:
@@ -106,7 +106,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: authentik-cnpg-app
-                  key: database
+                  key: dbname
             - name: AUTHENTIK_POSTGRESQL__USER
               valueFrom:
                 secretKeyRef:
