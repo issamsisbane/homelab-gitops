@@ -16,115 +16,115 @@ spec:
     chart: authentik
     helm:
       values: |
-				authentik:
-					secret_key: "env://AUTHENTIK_SECRET_KEY"
+        authentik:
+          secret_key: "env://AUTHENTIK_SECRET_KEY"
 
-					postgresql:
-						password: "env://AUTHENTIK_POSTGRESQL__PASSWORD"
+          postgresql:
+            password: "env://AUTHENTIK_POSTGRESQL__PASSWORD"
 
-					error_reporting:
-						enabled: false
+          error_reporting:
+            enabled: false
 
-				postgresql:
-					enabled: false
+        postgresql:
+          enabled: false
 
-				server:
-					ingress:
-						enabled: true
-						ingressClassName: tailscale
-						hosts:
-							- host: authentik
-								paths:
-									- path: /
-										pathType: Prefix
-						tls:
-							- hosts:
-									- authentik
+        server:
+          ingress:
+            enabled: true
+            ingressClassName: tailscale
+            hosts:
+              - host: authentik
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - hosts:
+                  - authentik
 
-					env:
-						- name: AUTHENTIK_SECRET_KEY
-							valueFrom:
-								secretKeyRef:
-									name: authentik-secrets
-									key: secret_key
-						- name: AUTHENTIK_POSTGRESQL__PASSWORD
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: password
-						- name: AUTHENTIK_POSTGRESQL__HOST
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: host
-						- name: AUTHENTIK_POSTGRESQL__PORT
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: port
-						- name: AUTHENTIK_POSTGRESQL__NAME
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: database
-						- name: AUTHENTIK_POSTGRESQL__USER
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: username
-						- name: AUTHENTIK_BOOTSTRAP_PASSWORD
-							valueFrom:
-								secretKeyRef:
-									name: authentik-secrets
-									key: bootstrap-password
-						- name: AUTHENTIK_BOOTSTRAP_EMAIL
-							valueFrom:
-								secretKeyRef:
-									name: authentik-secrets
-									key: bootstrap-email
+          env:
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secrets
+                  key: secret_key
+            - name: AUTHENTIK_POSTGRESQL__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: password
+            - name: AUTHENTIK_POSTGRESQL__HOST
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: host
+            - name: AUTHENTIK_POSTGRESQL__PORT
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: port
+            - name: AUTHENTIK_POSTGRESQL__NAME
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: database
+            - name: AUTHENTIK_POSTGRESQL__USER
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: username
+            - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secrets
+                  key: bootstrap-password
+            - name: AUTHENTIK_BOOTSTRAP_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secrets
+                  key: bootstrap-email
 
-				worker:
-					env:
-						- name: AUTHENTIK_SECRET_KEY
-							valueFrom:
-								secretKeyRef:
-									name: authentik-secrets
-									key: secret_key
-						- name: AUTHENTIK_POSTGRESQL__PASSWORD
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: password
-						- name: AUTHENTIK_POSTGRESQL__HOST
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: host
-						- name: AUTHENTIK_POSTGRESQL__PORT
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: port
-						- name: AUTHENTIK_POSTGRESQL__NAME
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: database
-						- name: AUTHENTIK_POSTGRESQL__USER
-							valueFrom:
-								secretKeyRef:
-									name: authentik-cnpg-app
-									key: username
-						- name: AUTHENTIK_BOOTSTRAP_PASSWORD
-							valueFrom:
-								secretKeyRef:
-									name: authentik-secrets
-									key: bootstrap-password
-						- name: AUTHENTIK_BOOTSTRAP_EMAIL
-							valueFrom:
-								secretKeyRef:
-									name: authentik-secrets
-									key: bootstrap-email
+        worker:
+          env:
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secrets
+                  key: secret_key
+            - name: AUTHENTIK_POSTGRESQL__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: password
+            - name: AUTHENTIK_POSTGRESQL__HOST
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: host
+            - name: AUTHENTIK_POSTGRESQL__PORT
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: port
+            - name: AUTHENTIK_POSTGRESQL__NAME
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: database
+            - name: AUTHENTIK_POSTGRESQL__USER
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-cnpg-app
+                  key: username
+            - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secrets
+                  key: bootstrap-password
+            - name: AUTHENTIK_BOOTSTRAP_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: authentik-secrets
+                  key: bootstrap-email
 
   destination:
     server: https://kubernetes.default.svc
@@ -137,5 +137,5 @@ spec:
       selfHeal: true
 
     syncOptions:
-    - CreateNamespace=true
-    - ServerSideApply=true
+      - CreateNamespace=true
+      - ServerSideApply=true
