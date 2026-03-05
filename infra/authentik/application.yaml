@@ -33,10 +33,7 @@ spec:
             enabled: true
             ingressClassName: tailscale
             hosts:
-              - host: authentik
-                paths:
-                  - path: /
-                    pathType: Prefix
+              - authentik
             tls:
               - hosts:
                   - authentik
