@@ -20,9 +20,9 @@ spec:
           oidc:
             secret:
               create: false
-						externalSecret:
-							enabled: true
-							name: headlamp-oidc
+            externalSecret:
+              enabled: true
+              name: headlamp-oidc
             scopes: "openid email profile groups"
   destination:
     server: https://kubernetes.default.svc
