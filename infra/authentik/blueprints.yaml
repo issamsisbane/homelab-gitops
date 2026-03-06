@@ -22,12 +22,12 @@ data:
         attrs:
           name: headlamp
           client_id: headlamp
-					authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
-					invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+          authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+          invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
           client_type: confidential
-					redirect_uris:
-					- url: "https://headlamp.tail7e39b9.ts.net/oidc-callback"
-						matching_mode: strict
+          redirect_uris:
+          - url: "https://headlamp.tail7e39b9.ts.net/oidc-callback"
+            matching_mode: strict
           property_mappings:
           - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
           - !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
