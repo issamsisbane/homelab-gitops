@@ -16,24 +16,11 @@ spec:
     chart: headlamp
     helm:
       values: |
-        env:
-          - name: OIDC_CLIENT_ID
-            valueFrom:
-              secretKeyRef:
-                name: headlamp-oidc
-                key: client-id
-          - name: OIDC_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: headlamp-oidc
-                key: client-secret
-          - name: OIDC_ISSUER_URL
-            valueFrom:
-              secretKeyRef:
-                name: headlamp-oidc
-                key: issuer-url
         config:
           oidc:
+            secret:
+              create: false
+              name: headlamp-oidc
             scopes: "openid email profile groups"
   destination:
     server: https://kubernetes.default.svc
