@@ -1,0 +1,40 @@
+# blueprints.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authentik-blueprints
+  namespace: authentik
+data:
+  headlamp.yaml: |
+		version: 1
+		entries:
+			- model: authentik_providers_oauth2.scopemapping
+				identifiers:
+					name: "oauth2-scope-groups"
+				attrs:
+					name: "oauth2-scope-groups"
+					scope_name: "groups"
+					expression: "return [group.name for group in request.user.ak_groups.all()]"
+
+			- model: authentik_providers_oauth2.oauth2provider
+				identifiers:
+					name: headlamp
+				attrs:
+					name: headlamp
+					client_id: headlamp
+					authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+					client_type: confidential
+					redirect_uris: "https://headlamp.tail7e39b9.ts.net/oidc-callback"
+					property_mappings:
+					- !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+					- !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
+					- !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+					- !Find [authentik_providers_oauth2.scopemapping, [scope_name, groups]]
+
+			- model: authentik_core.application
+				identifiers:
+					slug: headlamp
+				attrs:
+					name: Headlamp
+					slug: headlamp
+					provider: !Find [authentik_providers_oauth2.oauth2provider, [name, headlamp]]
