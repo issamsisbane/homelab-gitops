@@ -14,7 +14,26 @@ spec:
     repoURL: https://kubernetes-sigs.github.io/headlamp
     targetRevision: 0.40.0
     chart: headlamp
-
+    helm:
+      values: |
+        config:
+          oidc:
+            clientID:
+              valueFrom:
+                secretKeyRef:
+                  name: headlamp-oidc
+                  key: client-id
+            clientSecret:
+              valueFrom:
+                secretKeyRef:
+                  name: headlamp-oidc
+                  key: client-secret
+            issuerURL:
+              valueFrom:
+                secretKeyRef:
+                  name: headlamp-oidc
+                  key: issuer-url
+            scopes: "openid email profile groups"
   destination:
     server: https://kubernetes.default.svc
     namespace: headlamp
