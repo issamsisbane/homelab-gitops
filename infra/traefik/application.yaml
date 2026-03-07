@@ -1,0 +1,53 @@
+# apps/traefik.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+spec:
+  project: infrastructure
+  source:
+    repoURL: https://helm.traefik.io/traefik
+    chart: traefik
+    targetRevision: "39.0.4"
+    helm:
+      valuesObject:
+        deployment:
+          replicas: 2
+
+        # Pas de LoadBalancer — Cloudflare Tunnel contacte Traefik directement
+        service:
+          type: ClusterIP
+
+        # Ports
+        ports:
+          web:
+            port: 8000
+            expose:
+              default: true
+          websecure:
+            port: 8443
+            expose:
+              default: true
+
+        # Logs
+        logs:
+          general:
+            level: INFO
+          access:
+            enabled: true
+
+        # Metrics Prometheus (optionnel)
+        metrics:
+          prometheus:
+            enabled: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
