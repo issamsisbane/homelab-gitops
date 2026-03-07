@@ -5,7 +5,7 @@ metadata:
   name: traefik
   namespace: argocd
 spec:
-  project: infrastructure
+  project: infra
   source:
     repoURL: https://helm.traefik.io/traefik
     chart: traefik
