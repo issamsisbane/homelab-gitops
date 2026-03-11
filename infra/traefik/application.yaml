@@ -12,12 +12,24 @@ spec:
     targetRevision: "39.0.4"
     helm:
       valuesObject:
+				providers:
+					kubernetesGateway:
+						enabled: true
         deployment:
           replicas: 2
 
         # Pas de LoadBalancer — Cloudflare Tunnel contacte Traefik directement
         service:
           type: ClusterIP
+
+				podAntiAffinity:
+					preferredDuringSchedulingIgnoredDuringExecution:
+						- weight: 100
+							podAffinityTerm:
+								labelSelector:
+									matchLabels:
+										app.kubernetes.io/name: traefik
+								topologyKey: kubernetes.io/hostname
 
         # Ports
         ports:
