@@ -24,7 +24,7 @@ spec:
             longhorn:
               manager:
                 tag: v1.11.0-hotfix-1
-              instance-manager:
+              instanceManager:
                 tag: v1.11.0-hotfix-2
 
   destination:
