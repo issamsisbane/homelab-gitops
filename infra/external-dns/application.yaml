@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: infra
+spec:
+  project: infra
+
+  source:
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    targetRevision: 1.20.0
+    chart: external-dns
+    helm:
+      values: |
+				provider: cloudflare
+				env:
+				- name: CF_API_TOKEN
+					valueFrom:
+						secretKeyRef:
+							name: cloudflare-credentials
+							key: apiKey
+
+				cloudflare:
+					proxied: true
+
+				sources:
+					- gateway-httproute  # Gateway API HTTPRoute (principal)
+					- service            # Services de type LoadBalancer (fallback)
+
+				domainFilters:
+					- "issamhomelab.org"
+
+				policy: sync
+
+				registry: txt
+				txtOwnerId: "ih-cluster"
+				txtPrefix: "_edns."
+
+				interval: "1m"
+
+				# Logs
+				logLevel: info
+				logFormat: text
+
+				rbac:
+					create: true
+
+				resources:
+					requests:
+						cpu: 10m
+						memory: 32Mi
+					limits:
+						cpu: 100m
+						memory: 128Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: external-dns
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
