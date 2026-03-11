@@ -22,7 +22,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: cloudflare-credentials
-              key: apiKey
+              key: token
 
         cloudflare:
           proxied: true
