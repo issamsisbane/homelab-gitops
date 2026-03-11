@@ -19,7 +19,7 @@ spec:
         persistence:
           defaultClassReplicaCount: 1
         preUpgradeChecker:
-          upgradeVersionCheck: true
+          upgradeVersionCheck: false
         image:
             longhorn:
               manager:
