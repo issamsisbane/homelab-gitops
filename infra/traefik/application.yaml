@@ -22,15 +22,6 @@ spec:
         service:
           type: ClusterIP
 
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/name: traefik
-                topologyKey: kubernetes.io/hostname
-
         # Ports
         ports:
           web:
