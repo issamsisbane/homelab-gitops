@@ -18,6 +18,14 @@ spec:
       values: |
         persistence:
           defaultClassReplicaCount: 1
+        preUpgradeChecker:
+          upgradeVersionCheck: true
+        image:
+            longhorn:
+              manager:
+                tag: v1.11.0-hotfix-1
+              instance-manager:
+                tag: v1.11.0-hotfix-2
 
   destination:
     server: https://kubernetes.default.svc
