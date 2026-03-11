@@ -16,46 +16,46 @@ spec:
     chart: external-dns
     helm:
       values: |
-				provider: cloudflare
-				env:
-				- name: CF_API_TOKEN
-					valueFrom:
-						secretKeyRef:
-							name: cloudflare-credentials
-							key: apiKey
+        provider: cloudflare
+        env:
+        - name: CF_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-credentials
+              key: apiKey
 
-				cloudflare:
-					proxied: true
+        cloudflare:
+          proxied: true
 
-				sources:
-					- gateway-httproute  # Gateway API HTTPRoute (principal)
-					- service            # Services de type LoadBalancer (fallback)
+        sources:
+          - gateway-httproute  # Gateway API HTTPRoute (principal)
+          - service            # Services de type LoadBalancer (fallback)
 
-				domainFilters:
-					- "issamhomelab.org"
+        domainFilters:
+          - "issamhomelab.org"
 
-				policy: sync
+        policy: sync
 
-				registry: txt
-				txtOwnerId: "ih-cluster"
-				txtPrefix: "_edns."
+        registry: txt
+        txtOwnerId: "ih-cluster"
+        txtPrefix: "_edns."
 
-				interval: "1m"
+        interval: "1m"
 
-				# Logs
-				logLevel: info
-				logFormat: text
+        # Logs
+        logLevel: info
+        logFormat: text
 
-				rbac:
-					create: true
+        rbac:
+          create: true
 
-				resources:
-					requests:
-						cpu: 10m
-						memory: 32Mi
-					limits:
-						cpu: 100m
-						memory: 128Mi
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
