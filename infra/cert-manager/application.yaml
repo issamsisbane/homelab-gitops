@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: infra
+spec:
+  project: infra
+
+  source:
+    repoURL: oci://quay.io/jetstack/charts/cert-manager:v1.20.0
+    targetRevision: v1.20.0
+    chart: cert-manager
+    helm:
+      values: |
+          installCRDs: true
+
+          replicaCount: 1
+
+          # Active le support Gateway API pour cert-manager
+          featureGates: "ExperimentalGatewayAPISupport=true"
+
+          # Permet à cert-manager de surveiller toutes les namespaces
+          clusterResourceNamespace: cert-manager
+
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+
+          webhook:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+
+          cainjector:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
