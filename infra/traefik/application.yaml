@@ -11,10 +11,10 @@ spec:
     chart: traefik
     targetRevision: "39.0.4"
     helm:
-      valuesObject:
-				providers:
-					kubernetesGateway:
-						enabled: true
+      values: |
+        providers:
+          kubernetesGateway:
+            enabled: true
         deployment:
           replicas: 2
 
@@ -22,14 +22,14 @@ spec:
         service:
           type: ClusterIP
 
-				podAntiAffinity:
-					preferredDuringSchedulingIgnoredDuringExecution:
-						- weight: 100
-							podAffinityTerm:
-								labelSelector:
-									matchLabels:
-										app.kubernetes.io/name: traefik
-								topologyKey: kubernetes.io/hostname
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: traefik
+                topologyKey: kubernetes.io/hostname
 
         # Ports
         ports:
