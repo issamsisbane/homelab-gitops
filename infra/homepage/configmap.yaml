@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+  settings.yaml: |
+    title: "Homelab - Issam"
+    statusStyle: "dot"
+    useEqualHeights: true
+    background:
+      image: https://images.unsplash.com/photo-1764366795867-a0e7fcbf791e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+      blur: sm
+  custom.css: |
+    #information-widgets {
+        flex-wrap: wrap !important;
+        align-items: center !important;
+    }
+
+    #widgets-wrap {
+        order: 1 !important;
+        flex: 1 !important;
+    }
+
+    #information-widgets-right {
+        order: 1 !important;
+        flex: 1 !important;
+        justify-content: flex-end !important;
+        gap: 12px !important;
+    }
+
+    #information-widgets-right .information-widget-search {
+        order: 2 !important;
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    #information-widgets-right .information-widget-datetime,
+    #information-widgets-right .information-widget-openmeteo {
+        order: 1 !important;
+    }
+  custom.js: ""
+  bookmarks.yaml: |
+    - Developer:
+        - GitOps:
+            - abbr: GHOPS
+              href: https://github.com/issamsisbane/homelab-gitops
+              icon: github.png
+        - Portfolio:
+            - abbr: GHPORT
+              href: https://github.com/issamsisbane/portfolio
+              icon: github.png
+        - Garden:
+            - abbr: GHGARD
+              href: https://github.com/issamsisbane/garden
+              icon: github.png
+        - Dotfiles:
+            - abbr: GHDFILES
+              href: https://github.com/issamsisbane/dotfiles
+              icon: github.png
+    - Work:
+        - Claude:
+            - abbr: CL
+              href: https://claude.ai/
+              icon: claude-ai.svg
+    - Job:
+        - Portfolio:
+            - abbr: PF
+              href: https://issamsisbane.github.io/portfolio/en/
+              icon: mdi-crane-#ffffff
+        - CV:
+            - abbr: PF
+              href: https://github.com/issamsisbane/cv/blob/main/build/cv-french.pdf
+              icon: mdi-book-open-variant-#ffffff
+  services.yaml: |
+    - Infrastructure:
+        - Authentik:
+            href: https://authentik.issamhomelab.org/
+            icon: authentik.png
+            siteMonitor: https://authentik.issamhomelab.org/
+            description: SSO Provider
+        - Headlamp:
+            href: https://headlamp.issamhomelab.org/
+            icon: headlamp.png
+            siteMonitor: https://headlamp.issamhomelab.org/
+            description: Kubernetes Dashboard
+        - ArgoCD:
+            href: https://argocd.tail7e39b9.ts.net/
+            icon: argo-cd.png
+            siteMonitor: https://argocd-server.argocd.svc.cluster.local/
+            description: Gitops
+        - Openbao:
+            href: https://openbao.tail7e39b9.ts.net/
+            icon: openbao.png
+            siteMonitor: http://openbao.openbao.svc.cluster.local:8200/
+            description: Secret Manager
+
+    - Apps:
+        - Umami:
+            href: https://analytics.issamhomelab.org/
+            icon: umami.png
+            siteMonitor: https://analytics.issamhomelab.org/
+            description: Site Analytics
+
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - datetime:
+        text_size: 2xl
+        locale: fr
+        format:
+          dateStyle: long
+          timeStyle: medium
+    - openmeteo:
+        label: Paris
+        latitude: 48.8534
+        longitude: 2.3488
+        timezone: Europe/Paris
+        units: metric
+        cache: 5
+        format:
+          maximumFractionDigits: 1
+  docker.yaml: ""
