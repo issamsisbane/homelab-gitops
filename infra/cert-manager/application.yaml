@@ -20,10 +20,8 @@ spec:
 
           replicaCount: 1
 
-          # Active le support Gateway API pour cert-manager
           featureGates: "ExperimentalGatewayAPISupport=true"
 
-          # Permet à cert-manager de surveiller toutes les namespaces
           clusterResourceNamespace: cert-manager
 
           resources:

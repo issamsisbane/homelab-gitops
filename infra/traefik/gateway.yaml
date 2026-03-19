@@ -1,0 +1,30 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: main-gateway
+  namespace: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    external-dns.alpha.kubernetes.io/target: "5c1e74f9-5915-46af-bdf7-4d6f3e0964ba.cfargotunnel.com"
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 8000
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: https
+      protocol: HTTPS
+      port: 8443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        # cert-manager va remplir ce secret avec le certificat
+        certificateRefs:
+          - name: main-gateway-tls
+            namespace: traefik
