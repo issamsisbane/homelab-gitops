@@ -5,9 +5,55 @@ metadata:
   name: authentik-blueprints
   namespace: authentik
 data:
+  homepage.yaml: |
+    version: 1
+    entries:
+      - model: authentik_providers_proxy.proxyprovider
+        state: present
+        identifiers:
+          name: Homepage ForwardAuth
+        attrs:
+          name: Homepage ForwardAuth
+          authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-implicit-consent]]
+          invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+          external_host: https://home.issamhomelab.org
+          mode: forward_single
+          cookie_domain: issamhomelab.org
+
+      - model: authentik_core.application
+        state: present
+        identifiers:
+          slug: homepage
+        attrs:
+          name: Homepage
+          slug: homepage
+          provider: !Find [authentik_providers_proxy.proxyprovider, [name, Homepage ForwardAuth]]
+
+      - model: authentik_outposts.outpost
+        state: present
+        identifiers:
+          name: authentik Embedded Outpost
+        attrs:
+          name: authentik Embedded Outpost
+          type: proxy
+          providers:
+            - !Find [authentik_providers_proxy.proxyprovider, [name, Homepage ForwardAuth]]
+          config:
+            authentik_host: https://authentik.issamhomelab.org
+            authentik_host_insecure: false
+            kubernetes_namespace: authentik
   headlamp.yaml: |
     version: 1
     entries:
+      # Certificat RSA (self-signed généré par Authentik)
+      - model: authentik_crypto.certificatekeypair
+        state: present
+        identifiers:
+          name: headlamp-signing-key
+        attrs:
+          name: headlamp-signing-key
+          managed: ""
+
       - model: authentik_providers_oauth2.scopemapping
         identifiers:
           name: "oauth2-scope-groups"
@@ -25,8 +71,9 @@ data:
           authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
           invalidation_flow: !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
           client_type: confidential
+          signing_key: !Find [authentik_crypto.certificatekeypair, [name, headlamp-signing-key]]
           redirect_uris:
-          - url: "https://headlamp.tail7e39b9.ts.net/oidc-callback"
+          - url: "https://headlamp.issamhomelab.org/oidc-callback"
             matching_mode: strict
           property_mappings:
           - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
