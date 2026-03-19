@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: main-gateway-tls
+  namespace: traefik
+spec:
+  secretName: main-gateway-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.issamhomelab.org"
+    - "issamhomelab.org"
