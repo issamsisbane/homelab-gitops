@@ -24,7 +24,6 @@ spec:
           from: All
       tls:
         mode: Terminate
-        # cert-manager va remplir ce secret avec le certificat
         certificateRefs:
           - name: main-gateway-tls
             namespace: traefik
