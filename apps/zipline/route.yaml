@@ -1,0 +1,26 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: zipline
+  namespace: zipline
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "share.issamhomelab.org"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: traefik
+      sectionName: https
+
+  hostnames:
+    - "share.issamhomelab.org"
+
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: zipline
+          namespace: zipline
+          port: 3000

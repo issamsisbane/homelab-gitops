@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zipline
+  namespace: zipline
+  labels:
+    app: zipline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zipline
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: zipline
+    spec:
+
+      containers:
+        - name: zipline
+          image: ghcr.io/diced/zipline
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: zipline-cnpg-app
+                key: fqdn-uri
+          - name: CORE_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: zipline-secret
+                key: core-secret
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+
+      terminationGracePeriodSeconds: 30
