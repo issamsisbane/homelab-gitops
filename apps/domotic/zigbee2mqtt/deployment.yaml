@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zigbee2mqtt
+  namespace: domotic
+  labels:
+    app: zigbee2mqtt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zigbee2mqtt
+  template:
+    metadata:
+      labels:
+        app: zigbee2mqtt
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: ih-node-3
+
+      initContainers:
+        - name: copy-config
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              cp /config-ro/configuration.yaml /data/configuration.yaml
+          volumeMounts:
+            - name: config
+              mountPath: /config-ro
+            - name: data
+              mountPath: /data
+      containers:
+        - name: zigbee2mqtt
+          image: koenkk/zigbee2mqtt:2.9.1
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+              - SYS_RAWIO
+              - SYS_ADMIN
+          env:
+            - name: ZIGBEE2MQTT_DATA
+              value: /data
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: zigbee-device
+              mountPath: /dev/ttyUSB0
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+
+      volumes:
+        - name: config
+          configMap:
+            name: zigbee2mqtt-config
+        - name: zigbee-device
+          hostPath:
+            path: /dev/ttyUSB0
+        - name: data
+          persistentVolumeClaim:
+            claimName: zigbee2mqtt-data

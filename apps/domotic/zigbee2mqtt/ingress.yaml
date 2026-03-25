@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zigbee2mqtt
+  namespace: domotic
+spec:
+  defaultBackend:
+    service:
+      name: zigbee2mqtt
+      port:
+        name: frontend
+  ingressClassName: tailscale
+  tls:
+  - hosts:
+    - zigbee2mqtt
