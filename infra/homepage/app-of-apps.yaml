@@ -9,7 +9,7 @@ metadata:
     workload-type: infra
 spec:
   project: infra
-	source:
+  source:
     repoURL: https://github.com/issamsisbane/homelab-gitops.git
     targetRevision: "main"
     path: infra/homepage
