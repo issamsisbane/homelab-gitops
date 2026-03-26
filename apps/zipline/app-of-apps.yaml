@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps-zipline
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: apps
+spec:
+  project: apps
+	source:
+    repoURL: https://github.com/issamsisbane/homelab-gitops.git
+    targetRevision: "main"
+    path: apps/zipline
+
+    directory:
+      recurse: true
+      exclude: '*application.yaml'
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
