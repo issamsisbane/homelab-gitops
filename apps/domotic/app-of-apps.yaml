@@ -9,14 +9,14 @@ metadata:
     workload-type: apps
 spec:
   project: apps
-	source:
+  source:
     repoURL: https://github.com/issamsisbane/homelab-gitops.git
     targetRevision: "main"
     path: apps/domotic
 
     directory:
       recurse: true
-      exclude: '*application.yaml'
+      exclude: '*app-of-apps.yaml'
 
   destination:
     server: https://kubernetes.default.svc

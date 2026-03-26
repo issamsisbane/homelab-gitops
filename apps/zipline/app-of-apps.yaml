@@ -16,7 +16,7 @@ spec:
 
     directory:
       recurse: true
-      exclude: '*application.yaml'
+      exclude: '*app-of-apps.yaml'
 
   destination:
     server: https://kubernetes.default.svc
