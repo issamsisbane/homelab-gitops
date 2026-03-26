@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps-cloudflared
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: infra
+spec:
+  project: infra
+  source:
+    repoURL: https://github.com/issamsisbane/homelab-gitops.git
+    targetRevision: "main"
+    path: infra/cloudflared
+
+    directory:
+      recurse: true
+      exclude: 'app-of-apps.yaml'
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
