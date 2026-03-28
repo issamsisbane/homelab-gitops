@@ -35,6 +35,8 @@ spec:
             s3:
               endpoint: http://seaweedfs-filer.seaweedfs.svc.cluster.local:8333
               region: us-east-1
+              secretAccessKey: "${S3_SECRET_ACCESS_KEY}"
+              accessKeyId: "${S3_ACCESS_KEY_ID}"
               s3ForcePathStyle: true
               insecure: true
             bucketNames:
@@ -59,12 +61,6 @@ spec:
           common:
             replication_factor: 1
             path_prefix: /var/loki
-            storage:
-              s3:
-                endpoint: http://seaweedfs-filer.seaweedfs.svc.cluster.local:8333
-                region: us-east-1
-                s3ForcePathStyle: true
-                insecure: true
 
           rulerConfig:
             storage:
