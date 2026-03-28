@@ -86,23 +86,6 @@ spec:
                 }
               }
 
-              loki.source.journal "system" {
-                path       = "/var/log/journal"
-                forward_to = [loki.process.journal.receiver]
-                labels     = { source = "journal" }
-              }
-
-              loki.process "journal" {
-                forward_to = [loki.write.default.receiver]
-                stage.journal {
-                  max_age = "12h"
-                  labels  = {
-                    unit     = "__journal__systemd_unit",
-                    hostname = "__journal__hostname",
-                  }
-                }
-              }
-
           mounts:
             varlog: true
 
