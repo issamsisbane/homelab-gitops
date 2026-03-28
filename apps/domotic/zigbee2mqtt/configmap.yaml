@@ -22,3 +22,9 @@ data:
     devices:
       '0xa4c138b9ef30ac87':
         friendly_name: ih-node-3
+      '0xa4c13862d47eb4ed':
+        friendly_name: Albert
+      '0xa4c13808c560ce1a':
+        friendly_name: ih-node-2
+      '0xa4c138a0a6dd0917':
+        friendly_name: ih-node-1
