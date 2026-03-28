@@ -16,12 +16,11 @@ spec:
     helm:
       releaseName: loki
       values: |
-        global:
-          commonConfig:
-            replication_factor: 1
         deploymentMode: SingleBinary
         
         loki:
+          commonConfig:
+            replication_factor: 1
           auth_enabled: false
           schemaConfig:
             configs:
@@ -60,10 +59,6 @@ spec:
             retention_delete_delay: 2h
             retention_delete_worker_count: 150
             delete_request_store: s3
-
-          common:
-            replication_factor: 1
-            path_prefix: /var/loki
 
           rulerConfig:
             storage:
