@@ -1,0 +1,58 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  namespace: observability
+  labels:
+    dashboards: grafana
+spec:
+  config:
+		security:
+      admin_user: "${GRAFANA_ADMIN_USER}"
+      admin_password: "${GRAFANA_ADMIN_PASSWORD}"
+    server:
+      root_url: "%(protocol)s://%(domain)s/"
+    auth:
+      disable_login_form: "false"
+    auth.anonymous:
+      enabled: "false"
+    log:
+      level: warn
+    analytics:
+      reporting_enabled: "false"
+      check_for_updates: "false"
+
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: longhorn
+      resources:
+        requests:
+          storage: 1Gi
+
+  deployment:
+    spec:
+      replicas: 1
+      template:
+        spec:
+          containers:
+            - name: grafana
+							env:
+							- name: GRAFANA_ADMIN_USER
+								valueFrom:
+									secretKeyRef:
+										name: grafana-admin-secret
+										key: GF_SECURITY_ADMIN_USER
+							- name: GRAFANA_ADMIN_PASSWORD
+								valueFrom:
+									secretKeyRef:
+										name: grafana-admin-secret
+										key: GF_SECURITY_ADMIN_PASSWORD
+              resources:
+                requests:
+                  memory: "128Mi"
+                  cpu: "50m"
+                limits:
+                  memory: "256Mi"
+                  cpu: "200m"
