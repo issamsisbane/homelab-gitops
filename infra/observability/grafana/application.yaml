@@ -17,18 +17,18 @@ spec:
     helm:
       releaseName: grafana-operator
       values: |
-				operator:
-					replicas: 1
+        operator:
+          replicas: 1
 
-					resources:
-						requests:
-							memory: "64Mi"
-							cpu: "50m"
-						limits:
-							memory: "128Mi"
-							cpu: "100m"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
 
-					watchNamespaces: ["observability"]
+          watchNamespaces: ["observability"]
 
   destination:
     server: https://kubernetes.default.svc
