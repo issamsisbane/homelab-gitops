@@ -7,7 +7,7 @@ metadata:
     dashboards: grafana
 spec:
   config:
-		security:
+    security:
       admin_user: "${GRAFANA_ADMIN_USER}"
       admin_password: "${GRAFANA_ADMIN_PASSWORD}"
     server:
@@ -38,17 +38,17 @@ spec:
         spec:
           containers:
             - name: grafana
-							env:
-							- name: GRAFANA_ADMIN_USER
-								valueFrom:
-									secretKeyRef:
-										name: grafana-admin-secret
-										key: GF_SECURITY_ADMIN_USER
-							- name: GRAFANA_ADMIN_PASSWORD
-								valueFrom:
-									secretKeyRef:
-										name: grafana-admin-secret
-										key: GF_SECURITY_ADMIN_PASSWORD
+              env:
+              - name: GRAFANA_ADMIN_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: grafana-admin-secret
+                    key: GF_SECURITY_ADMIN_USER
+              - name: GRAFANA_ADMIN_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: grafana-admin-secret
+                    key: GF_SECURITY_ADMIN_PASSWORD
               resources:
                 requests:
                   memory: "128Mi"
