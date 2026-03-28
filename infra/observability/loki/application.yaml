@@ -30,6 +30,8 @@ spec:
                   prefix: loki_index_
                   period: 24h
 
+          replication_factor: 1
+
           storage:
             type: s3
             s3:
