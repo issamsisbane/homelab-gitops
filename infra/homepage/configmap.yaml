@@ -106,6 +106,16 @@ data:
             icon: umami.png
             siteMonitor: https://analytics.issamhomelab.org/
             description: Site Analytics
+        - Zipline:
+            href: https://share.issamhomelab.org/
+            icon: zipline.png
+            siteMonitor: https://share.issamhomelab.org/
+            description: Share Txt - Url shortener 
+        - Zigbee2Mqtt:
+            href: https://zigbee2Mqtt.tail7e39b9.ts.net/
+            icon: zigbee2Mqtt.png
+            siteMonitor: https://zigbee2Mqtt.tail7e39b9.ts.net/
+            description: Zigbee2Mqtt 
 
   widgets.yaml: |
     - kubernetes:
