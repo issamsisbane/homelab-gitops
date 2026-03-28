@@ -162,7 +162,11 @@ spec:
               cpu: "200m"
 
           admissionWebhooks:
-            enabled: false
+            enabled: true
+            patch:
+              enabled: false
+            certManager:
+              enabled: true
 
         defaultRules:
           create: true
