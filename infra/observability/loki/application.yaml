@@ -157,6 +157,15 @@ spec:
 
         test:
           enabled: false
+
+        chunksCache:
+          enabled: false
+
+        resultsCache:
+          enabled: false
+
+        lokiCanary:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
