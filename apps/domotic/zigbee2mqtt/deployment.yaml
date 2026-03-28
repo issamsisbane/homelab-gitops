@@ -66,6 +66,7 @@ spec:
         - name: zigbee-device
           hostPath:
             path: /dev/ttyUSB0
+            type: CharDevice
         - name: data
           persistentVolumeClaim:
             claimName: zigbee2mqtt-data
