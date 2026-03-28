@@ -1,0 +1,159 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seaweedfs
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+
+  source:
+    repoURL: https://seaweedfs.github.io/seaweedfs/helm
+    chart: seaweedfs
+    targetRevision: 4.17.0
+
+    helm:
+      values: |
+        global:
+          seaweedfs:
+            imagePullPolicy: IfNotPresent
+            loggingLevel: 2
+            enableReplication: false
+            enableSecurity: false
+            monitoring:
+              enabled: false
+
+        master:
+          enabled: true
+          replicas: 1
+
+          port: 9333
+          grpcPort: 19333
+
+          defaultReplication: "000"
+
+          volumeSizeLimitMB: 1000
+
+          data:
+            type: "persistentVolumeClaim"
+            size: "1Gi"
+            storageClass: "longhorn"
+
+          logs:
+            type: "emptyDir"
+
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+
+          affinity: ""
+
+        volume:
+          enabled: true
+          replicas: 1
+
+          port: 8080
+          grpcPort: 18080
+
+          dataDirs:
+            - name: data1
+              type: "persistentVolumeClaim"
+              size: "20Gi"
+              storageClass: "longhorn"
+              maxVolumes: 0
+
+          idx:
+            type: "emptyDir"
+
+          logs:
+            type: "emptyDir"
+
+          compactionMBps: "20"
+
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "512Mi"
+              cpu: "300m"
+
+          affinity: ""
+
+        filer:
+          enabled: true
+          replicas: 1
+
+          port: 8888
+          grpcPort: 18888
+
+          data:
+            type: "persistentVolumeClaim"
+            size: "1Gi"
+            storageClass: "longhorn"
+
+          logs:
+            type: "emptyDir"
+
+          extraEnvironmentVars:
+            WEED_LEVELDB2_ENABLED: "true"
+            WEED_MYSQL_ENABLED: "false"
+            WEED_FILER_BUCKETS_FOLDER: "/buckets"
+            WEED_FILER_OPTIONS_RECURSIVE_DELETE: "false"
+
+          s3:
+            enabled: true
+            port: 8333
+            enableAuth: true
+            existingConfigSecret: seaweedfs-s3-secret
+
+            createBuckets:
+            - name: chunks
+              anonymousRead: false
+            - name: ruler
+              anonymousRead: false
+            - name: admin
+              anonymousRead: false
+
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+
+          affinity: ""
+
+        s3:
+          enabled: false
+
+        sftp:
+          enabled: false
+
+        admin:
+          enabled: false
+
+        worker:
+          enabled: false
+
+        allInOne:
+          enabled: false
+
+        cosi:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: seaweedfs
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: false
+      selfHeal: true
