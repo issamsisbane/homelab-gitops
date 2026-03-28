@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-of-apps-s3
+  name: app-of-apps-seaweedfs
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/issamsisbane/homelab-gitops.git
     targetRevision: "main"
-    path: infra/s3
+    path: infra/seaweedfs
 
     directory:
       recurse: true
