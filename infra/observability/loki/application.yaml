@@ -16,8 +16,11 @@ spec:
     helm:
       releaseName: loki
       values: |
+        global:
+          commonConfig:
+            replication_factor: 1
         deploymentMode: SingleBinary
-
+        
         loki:
           auth_enabled: false
           schemaConfig:
@@ -29,8 +32,6 @@ spec:
                 index:
                   prefix: loki_index_
                   period: 24h
-
-          replication_factor: 1
 
           storage:
             type: s3
