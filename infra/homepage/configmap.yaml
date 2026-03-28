@@ -114,7 +114,7 @@ data:
         - Zigbee2Mqtt:
             href: https://zigbee2mqtt.tail7e39b9.ts.net/
             icon: zigbee2mqtt.png
-            siteMonitor: https://zigbee2mqtt.domotic.svc.cluster.local:8080/
+            siteMonitor: http://zigbee2mqtt.domotic.svc.cluster.local:8080/
             description: Zigbee2Mqtt 
 
   widgets.yaml: |
