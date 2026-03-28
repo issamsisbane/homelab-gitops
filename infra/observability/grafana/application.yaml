@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: grafana-operator
+    # Vérifier la dernière version : helm search repo grafana/grafana-operator --versions
+    targetRevision: 5.22.2
+
+    helm:
+      releaseName: grafana-operator
+      values: |
+				operator:
+					replicas: 1
+
+					resources:
+						requests:
+							memory: "64Mi"
+							cpu: "50m"
+						limits:
+							memory: "128Mi"
+							cpu: "100m"
+
+					watchNamespaces: ["observability"]
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
