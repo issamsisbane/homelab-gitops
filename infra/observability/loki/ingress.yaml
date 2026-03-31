@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: loki
+  namespace: loki
+spec:
+  defaultBackend:
+    service:
+      name: loki
+      port:
+        name: http-metrics
+  ingressClassName: tailscale
+  tls:
+  - hosts:
+    - loki
