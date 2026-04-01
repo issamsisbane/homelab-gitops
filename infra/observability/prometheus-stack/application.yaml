@@ -11,7 +11,6 @@ spec:
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
-    # Vérifier la dernière version : helm search repo prometheus-community/kube-prometheus-stack --versions
     targetRevision: 82.15.1
 
     helm:
@@ -22,12 +21,12 @@ spec:
 
         prometheus:
           resources:
-						limits:
-						  cpu: 500m
-						  memory: 512Mi
-						requests:
-						  cpu: 500m
-						  memory: 512Mi 
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
 
           prometheusSpec:
             retention: 15d
