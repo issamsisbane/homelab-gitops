@@ -12,7 +12,7 @@ Kubernetes homelab managed declaratively with ArgoCD using the app-of-apps patte
 | Ingress | Traefik + Kubernetes Gateway API |
 | External access | Cloudflare Tunnel |
 | Private access | Tailscale |
-| Auth (SSO) | Authentik (OIDC) |
+| Auth (SSO) | Authelia (OIDC) |
 | Secrets | OpenBao + ExternalSecrets |
 | Block storage | Longhorn |
 | Object storage | SeaweedFS (S3-compatible) |
@@ -38,7 +38,7 @@ ArgoCD watches `main` and reconciles continuously. Infra deletions are intention
 
 | Component | Purpose |
 |---|---|
-| `authentik` | OIDC SSO provider — all web UIs authenticate through it |
+| `authelia` | OIDC SSO provider — all web UIs authenticate through it |
 | `cert-manager` | Automatic TLS certificates via Let's Encrypt |
 | `cloudflared` | Cloudflare Tunnel — external entry point for public services |
 | `cnpg` | CloudNative PG operator for declarative PostgreSQL clusters |
@@ -50,7 +50,6 @@ ArgoCD watches `main` and reconciles continuously. Infra deletions are intention
 | `longhorn` | Distributed block storage (default StorageClass) |
 | `observability` | Prometheus, Loki, Grafana, Alloy monitoring stack |
 | `openbao` | HashiCorp Vault-compatible secrets engine |
-| `seaweedfs` | S3-compatible object storage (Loki backend) |
 | `tailscale` | VPN operator for private admin access |
 | `traefik` | Ingress controller (Kubernetes Gateway API, ClusterIP) |
 
@@ -67,7 +66,7 @@ ArgoCD watches `main` and reconciles continuously. Infra deletions are intention
 graph LR
     Browser -->|HTTPS| CF[Cloudflare]
     CF -->|Tunnel| Traefik["Traefik (ClusterIP)\n:8000 / :8443"]
-    Traefik -->|HTTPRoute| Public["Public Services\nhome · authentik · headlamp · share"]
+    Traefik -->|HTTPRoute| Public["Public Services\nhome · authelia· headlamp · share"]
 
     Device -->|Tailscale VPN| TSO[Tailscale Operator]
     TSO --> Admin["Admin Services\nArgoCD · OpenBao · Zigbee2MQTT"]
@@ -96,7 +95,7 @@ Each app defines an `ExternalSecret` resource that references a path in OpenBao.
 - **Tailscale for admin access** — ArgoCD, OpenBao, and other admin interfaces are not on the public internet at all; they're only reachable over the Tailscale VPN.
 - **OpenBao over Kubernetes Secrets in Git** — secrets are managed in a vault and pulled at deploy time, keeping the Git repo free of sensitive data.
 - **CNPG for databases** — declarative PostgreSQL clusters with built-in backup support, rather than managing stateful sets manually.
-- **Authentik as a single OIDC provider** — one place to manage users and SSO for all web interfaces (Headlamp, Grafana, etc.).
+- **Authelia as a single OIDC provider** — one place to manage users and SSO for all web interfaces (Headlamp, Grafana, etc.).
 
 ## Services
 
@@ -105,7 +104,7 @@ Each app defines an `ExternalSecret` resource that references a path in OpenBao.
 | Service | URL |
 |---|---|
 | Homepage | `home.issamhomelab.org` |
-| Authentik (SSO) | `authentik.issamhomelab.org` |
+| Authelia (SSO) | `auth.issamhomelab.org` |
 | Headlamp (K8s UI) | `headlamp.issamhomelab.org` |
 | Zipline (file share) | `share.issamhomelab.org` |
 

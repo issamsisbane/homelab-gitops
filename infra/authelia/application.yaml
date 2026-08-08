@@ -1,0 +1,219 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authelia
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: infra
+spec:
+  project: infra
+
+  source:
+    repoURL: https://charts.authelia.com
+    targetRevision: 0.10.54
+    chart: authelia
+    helm:
+      values: |
+        pod:
+          extraVolumeMounts:
+            - name: headlamp-oidc-secret
+              mountPath: /secrets/headlamp
+              readOnly: true
+            # FIX: nouveau montage pour la clé privée RSA du JWKS OIDC
+            - name: oidc-jwks-secret
+              mountPath: /secrets/oidc
+              readOnly: true
+
+          extraVolumes:
+            - name: headlamp-oidc-secret
+              secret:
+                secretName: authelia-secrets
+                items:
+                  - key: headlamp_client_secret
+                    path: client_secret
+            # FIX: ajoutez la clé oidc_jwk_rsa_key dans votre secret authelia-secrets
+            # (openssl genrsa -out oidc-jwks-rsa.pem 4096, puis stockez son contenu
+            # sous cette clé, avec vos autres secrets)
+            - name: oidc-jwks-secret
+              secret:
+                secretName: authelia-secrets
+                items:
+                  - key: oidc_private_key
+                    path: jwks_rsa_key.pem
+
+          kind: 'Deployment'
+          env:
+            - name: AUTHELIA_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-secrets
+                  key: jwt_secret
+            - name: AUTHELIA_SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-secrets
+                  key: session_secret
+            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-secrets
+                  key: storage.encryption.key
+            - name: AUTHELIA_STORAGE_POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-cnpg-app
+                  key: host
+            - name: AUTHELIA_STORAGE_POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-cnpg-app
+                  key: port
+            - name: AUTHELIA_STORAGE_POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-cnpg-app
+                  key: dbname
+            - name: AUTHELIA_STORAGE_POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-cnpg-app
+                  key: user
+            - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-cnpg-app
+                  key: password
+            - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-credentials
+                  key: admin-user-password
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: authelia-secrets
+                  key: oidc_hmac_secret
+
+        configMap:
+          disabled: false
+          key: 'configuration.yaml'
+
+          log:
+            level: 'info'
+
+          authentication_backend:
+            # FIX: sans "enabled: true" le chart n'écrit AUCUN bloc ldap dans
+            # configuration.yaml, d'où les erreurs "address/user/users_filter/
+            # groups_filter is required" (les valeurs étaient bien là mais jamais rendues)
+            ldap:
+              enabled: true
+              implementation: 'custom'
+              address: 'ldap://lldap.lldap.svc.cluster.local:3890'
+              base_dn: 'dc=issamhomelab,dc=org'
+              additional_users_dn: 'ou=people'
+              users_filter: '(&({username_attribute}={input})(objectclass=person))'
+              additional_groups_dn: 'ou=groups'
+              groups_filter: '(member={dn})'
+              user: 'uid=admin,ou=people,dc=issamhomelab,dc=org'
+            # FIX (recommandé): vous désactivez déjà le secret JWT du reset password
+            # ci-dessous (identity_validation.reset_password.secret.disabled), mais
+            # la fonctionnalité elle-même reste active par défaut, ce qui redemandera
+            # ce secret. Avec LDAP/lldap le reset de mot de passe doit se faire côté
+            # lldap, donc autant désactiver la fonctionnalité côté Authelia :
+            password_reset:
+              disable: true
+
+          session:
+            cookies:
+              - domain: 'issamhomelab.org'
+                subdomain: 'auth'
+                expiration: '1h'
+                inactivity: '5m'
+
+          access_control:
+            default_policy: 'deny'
+            rules:
+              - domain: 'auth.issamhomelab.org'
+                policy: 'bypass'
+              - domain: 'headlamp.issamhomelab.org'
+                policy: 'bypass'
+              - domain: 'home.issamhomelab.org'
+                policy: 'one_factor'
+
+          notifier:
+            disable_startup_check: true
+            # FIX: idem, "enabled: true" est requis pour que le bloc filesystem
+            # soit réellement écrit dans configuration.yaml
+            filesystem:
+              enabled: true
+              filename: '/tmp/authelia-notifications.txt'
+
+          identity_validation:
+            reset_password:
+              secret:
+                disabled: true
+
+          identity_providers:
+            oidc:
+              # FIX: sans "enabled: true" toute la section oidc (y compris vos
+              # clients !) est ignorée par le chart -> d'où "clients must have
+              # one or more configured"
+              enabled: true
+              # FIX: Authelia 4.38+ exige une vraie paire de clés JWKS (RSA/ECDSA)
+              # pour signer les jetons OIDC, en plus du hmac_secret.
+              # Génération: openssl genrsa -out oidc-jwks-rsa.pem 4096
+              # puis stockez le contenu du fichier dans authelia-secrets sous la
+              # clé "oidc_jwk_rsa_key" (voir extraVolumes ci-dessus).
+              jwks:
+                - key:
+                    path: '/secrets/oidc/jwks_rsa_key.pem'
+              claims_policies:
+                headlamp_policy:
+                  id_token: ['groups', 'email', 'preferred_username']
+              clients:
+                - client_id: 'headlamp'
+                  client_name: 'Headlamp'
+                  client_secret:
+                    path: '/secrets/headlamp/client_secret'
+                  claims_policy: 'headlamp_policy'
+                  consent_mode: 'pre-configured'
+                  pre_configured_consent_duration: '1 month'
+                  public: false
+                  authorization_policy: 'one_factor'
+                  redirect_uris:
+                    - 'https://headlamp.issamhomelab.org/oidc-callback'
+                  scopes:
+                    - 'openid'
+                    - 'email'
+                    - 'profile'
+                    - 'groups'
+
+        secret:
+          existingSecret: authelia-secrets
+          # FIX: c'est la ligne clé. Sans elle, le chart génère lui-même
+          # AUTHELIA_SESSION_SECRET_FILE / AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+          # (et plus tard AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE /
+          # AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE une fois ldap/oidc
+          # activés), qui rentrent en conflit avec vos variables pod.env
+          # manuelles ci-dessus. disabled: true désactive TOTALEMENT ce
+          # mécanisme d'auto-génération (env vars + volumes), puisque vous
+          # gérez déjà tout vous-même.
+          disabled: true
+
+        ingress:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authelia
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
