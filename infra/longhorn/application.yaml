@@ -18,6 +18,7 @@ spec:
       values: |
         persistence:
           defaultClassReplicaCount: 1
+          defaultDataLocality: best-effort
         preUpgradeChecker:
           upgradeVersionCheck: false
         image:
