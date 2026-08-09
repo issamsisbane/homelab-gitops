@@ -34,13 +34,13 @@ spec:
               secret:
                 secretName: authelia-secrets
                 items:
-                  - key: argocd_client_secret
+                  - key: argocd_client_secret_hash
                     path: client_secret
             - name: headlamp-oidc-secret
               secret:
                 secretName: authelia-secrets
                 items:
-                  - key: headlamp_client_secret
+                  - key: headlamp_client_secret_hash
                     path: client_secret
             # FIX: ajoutez la clé oidc_jwk_rsa_key dans votre secret authelia-secrets
             # (openssl genrsa -out oidc-jwks-rsa.pem 4096, puis stockez son contenu
