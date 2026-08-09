@@ -200,25 +200,26 @@ spec:
                     - 'groups'
                 - client_id: 'argocd'
                   client_name: 'ArgoCD'
-                  client_secret: 
+                  client_secret:
                     path: '/secrets/argocd/client_secret'
                   public: false
                   authorization_policy: 'one_factor'
                   require_pkce: false
                   pkce_challenge_method: ''
                   redirect_uris:
-                    - 'https://argocd.tail7e39b9.ts.net/auth/callback'
+                    - 'https://argocd.tail7e39b9.ts.net/api/dex/callback'
                   scopes:
                     - 'openid'
                     - 'groups'
                     - 'email'
+                    - 'profile'
                   response_types:
                     - 'code'
                   grant_types:
                     - 'authorization_code'
                   access_token_signed_response_alg: 'none'
                   userinfo_signed_response_alg: 'none'
-                  token_endpoint_auth_method: 'client_secret_post'
+                  token_endpoint_auth_method: 'client_secret_basic'
 
         secret:
           existingSecret: authelia-secrets
