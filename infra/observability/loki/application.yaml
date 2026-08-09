@@ -26,72 +26,38 @@ spec:
             configs:
               - from: "2025-01-01"
                 store: tsdb
-                object_store: s3
+                object_store: filesystem
                 schema: v13
                 index:
                   prefix: loki_index_
                   period: 24h
 
           storage:
-            type: s3
-            s3:
-              endpoint: http://seaweedfs-filer.seaweedfs.svc.cluster.local:8333
-              region: us-east-1
-              secretAccessKey: "${S3_SECRET_ACCESS_KEY}"
-              accessKeyId: "${S3_ACCESS_KEY_ID}"
-              s3ForcePathStyle: true
-              insecure: true
-            bucketNames:
-              chunks: chunks
-              ruler: ruler
-              admin: admin
+            type: filesystem
+
+          storage_config:
+            filesystem:
+              directory: /var/loki/chunks
 
           limits_config:
-            retention_period: 30d
+            retention_period: 168h
+            allow_structured_metadata: true
+            volume_enabled: true
             ingestion_burst_size_mb: 16
             ingestion_rate_mb: 8
             max_streams_per_user: 10000
 
-          compactor:
-            working_directory: /var/loki/compactor
-            compaction_interval: 10m
-            retention_enabled: true
-            retention_delete_delay: 2h
-            retention_delete_worker_count: 150
-            delete_request_store: s3
-
-          rulerConfig:
-            storage:
-              type: s3
-              s3:
-                bucketnames: ruler
-
         singleBinary:
           replicas: 1
-
-          extraArgs:
-          - -config.expand-env=true
-
-          extraEnv:
-            - name: S3_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: seaweedfs-s3-loki-credentials
-                  key: S3_ACCESS_KEY_ID
-            - name: S3_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: seaweedfs-s3-loki-credentials
-                  key: S3_SECRET_ACCESS_KEY
 
           persistence:
             enabled: true
             storageClass: longhorn
-            size: 5Gi
+            size: 20Gi
 
           resources:
             requests:
-              memory: "600Mi"
+              memory: "50Mi"
               cpu: "100m"
             limits:
               memory: "600Mi"
