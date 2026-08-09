@@ -18,6 +18,9 @@ spec:
       values: |
         pod:
           extraVolumeMounts:
+            - name: argocd-oidc-secret
+              mountPath: /secrets/argocd
+              readOnly: true
             - name: headlamp-oidc-secret
               mountPath: /secrets/headlamp
               readOnly: true
@@ -27,6 +30,12 @@ spec:
               readOnly: true
 
           extraVolumes:
+            - name: argocd-oidc-secret
+              secret:
+                secretName: authelia-secrets
+                items:
+                  - key: argocd_client_secret
+                    path: client_secret
             - name: headlamp-oidc-secret
               secret:
                 secretName: authelia-secrets
@@ -189,6 +198,26 @@ spec:
                     - 'email'
                     - 'profile'
                     - 'groups'
+                - client_id: 'argocd'
+                  client_name: 'ArgoCD'
+                  client_secret: '/secrets/argocd/client_secret'
+                  public: false
+                  authorization_policy: 'one_factor'
+                  require_pkce: false
+                  pkce_challenge_method: ''
+                  redirect_uris:
+                    - 'https://argocd.tail7e39b9.ts.net/auth/callback'
+                  scopes:
+                    - 'openid'
+                    - 'groups'
+                    - 'email'
+                  response_types:
+                    - 'code'
+                  grant_types:
+                    - 'authorization_code'
+                  access_token_signed_response_alg: 'none'
+                  userinfo_signed_response_alg: 'none'
+                  token_endpoint_auth_method: 'client_secret_basic'
 
         secret:
           existingSecret: authelia-secrets
