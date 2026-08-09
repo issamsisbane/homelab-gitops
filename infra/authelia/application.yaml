@@ -200,7 +200,8 @@ spec:
                     - 'groups'
                 - client_id: 'argocd'
                   client_name: 'ArgoCD'
-                  client_secret: '/secrets/argocd/client_secret'
+                  client_secret: 
+                    path: '/secrets/argocd/client_secret'
                   public: false
                   authorization_policy: 'one_factor'
                   require_pkce: false
