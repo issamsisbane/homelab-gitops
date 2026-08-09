@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lldap
+  namespace: lldap
+spec:
+  defaultBackend:
+    service:
+      name: lldap
+      port:
+        name: http
+  ingressClassName: tailscale
+  tls:
+  - hosts:
+    - lldap
