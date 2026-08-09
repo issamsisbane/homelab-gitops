@@ -5,7 +5,7 @@ metadata:
   namespace: traefik
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
-    external-dns.alpha.kubernetes.io/target: "5c1e74f9-5915-46af-bdf7-4d6f3e0964ba.cfargotunnel.com"
+    external-dns.alpha.kubernetes.io/target: "be2b10f4-9398-4de6-9e65-f42bc07c5473.cfargotunnel.com"
 spec:
   gatewayClassName: traefik
   listeners:

@@ -5,7 +5,7 @@ metadata:
   namespace: cloudflared
 data:
   config.yaml: |
-    tunnel: 5c1e74f9-5915-46af-bdf7-4d6f3e0964ba
+    tunnel: be2b10f4-9398-4de6-9e65-f42bc07c5473
     credentials-file: /etc/cloudflared-credentials/credentials.json
 
     ingress:
@@ -15,7 +15,6 @@ data:
           connectTimeout: 30s
           tlsTimeout: 30s
           tcpKeepAlive: 30s
-          httpHostHeader: ""
 
     loglevel: info
     logfile: ""
