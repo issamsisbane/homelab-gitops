@@ -18,6 +18,9 @@ spec:
       values: |
         pod:
           extraVolumeMounts:
+            - name: openbao-oidc-secret
+              mountPath: /secrets/openbao
+              readOnly: true
             - name: argocd-oidc-secret
               mountPath: /secrets/argocd
               readOnly: true
@@ -30,6 +33,12 @@ spec:
               readOnly: true
 
           extraVolumes:
+            - name: openbao-oidc-secret
+              secret:
+                secretName: authelia-secrets
+                items:
+                  - key: openbao_client_secret_hash
+                    path: client_secret
             - name: argocd-oidc-secret
               secret:
                 secretName: authelia-secrets
@@ -221,6 +230,22 @@ spec:
                   access_token_signed_response_alg: 'none'
                   userinfo_signed_response_alg: 'none'
                   token_endpoint_auth_method: 'client_secret_basic'
+								- client_id: 'openbao'
+									client_name: 'OpenBao'
+									client_secret:
+										path: '/secrets/openbao/client_secret'
+									public: false
+									authorization_policy: 'one_factor'
+									redirect_uris:
+										- 'https://openbao.tail7e39b9.ts.net/ui/vault/auth/oidc/oidc/callback'
+										- 'https://openbao.tail7e39b9.ts.net/v1/auth/oidc/oidc/callback'
+										- 'http://localhost:8250/oidc/callback'
+									scopes:
+										- 'openid'
+										- 'profile'
+										- 'groups'
+										- 'email'
+									userinfo_signed_response_alg: 'none'
 
         secret:
           existingSecret: authelia-secrets
