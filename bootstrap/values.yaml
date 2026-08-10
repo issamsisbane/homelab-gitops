@@ -1,3 +1,33 @@
 configs:
+  rbac:
+    policy.default: 'role:readonly'
+    policy.csv: |
+      g, k8s-admins, role:admin
   params:
     server.insecure: true
+  cm:
+    url: https://argocd.tail7e39b9.ts.net
+    dex.config: |
+      connectors:
+      - type: oidc
+        id: authelia
+        name: Authelia
+        config:
+          issuer: https://auth.issamhomelab.org
+          clientID: argocd
+          clientSecret: $argocd-oidc-secret:clientSecret
+          redirectURI: https://argocd.tail7e39b9.ts.net/api/dex/callback
+
+          scopes:
+          - openid
+          - profile
+          - email
+          - groups
+
+          # Enable group claims
+          insecureEnableGroups: true
+          getUserInfo: true
+
+          # Standard Authelia claims
+          userIDKey: sub
+          userNameKey: preferred_username
