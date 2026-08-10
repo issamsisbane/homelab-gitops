@@ -203,6 +203,7 @@ spec:
                   client_secret:
                     path: '/secrets/argocd/client_secret'
                   public: false
+                  consent_mode: 'pre-configured'
                   authorization_policy: 'one_factor'
                   require_pkce: false
                   pkce_challenge_method: ''
