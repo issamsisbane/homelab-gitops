@@ -190,6 +190,13 @@ spec:
               claims_policies:
                 headlamp_policy:
                   id_token: ['groups', 'email', 'preferred_username']
+								openbao_policy:
+									id_token:
+										- 'groups'
+										- 'email'
+										- 'email_verified'
+										- 'preferred_username'
+										- 'name'
               clients:
                 - client_id: 'headlamp'
                   client_name: 'Headlamp'
@@ -235,11 +242,13 @@ spec:
                   client_secret:
                     path: '/secrets/openbao/client_secret'
                   public: false
+                  consent_mode: 'pre-configured'
                   authorization_policy: 'one_factor'
                   redirect_uris:
                     - 'https://openbao.tail7e39b9.ts.net/ui/vault/auth/oidc/oidc/callback'
                     - 'https://openbao.tail7e39b9.ts.net/v1/auth/oidc/oidc/callback'
                     - 'http://localhost:8250/oidc/callback'
+									claims_policy: 'openbao_policy'
                   scopes:
                     - 'openid'
                     - 'profile'
