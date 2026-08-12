@@ -92,7 +92,7 @@ data:
         - ArgoCD:
             href: https://argocd.tail7e39b9.ts.net/
             icon: argo-cd.png
-            siteMonitor: http://argocd-server.argocd.svc.cluster.local/
+            siteMonitor: http://my-argo-cd-argocd-server.argocd.svc.cluster.local/
             description: Gitops
         - Openbao:
             href: https://openbao.tail7e39b9.ts.net/
