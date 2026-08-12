@@ -37,8 +37,7 @@ spec:
       enabled: "false"
     log:
       level: "debug"
-    log.filters:
-      "oauth.generic_oauth": "debug"
+      filters: "oauth.generic_oauth:debug"
     analytics:
       reporting_enabled: "false"
       check_for_updates: "false"
