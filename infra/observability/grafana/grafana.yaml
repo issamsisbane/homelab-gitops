@@ -68,7 +68,7 @@ spec:
                     secretKeyRef:
                       name: grafana-oidc
                       key: client-secret
-                 name: GF_DATABASE_HOST
+                - name: GF_DATABASE_HOST
                   valueFrom:
                     secretKeyRef:
                       name: grafana-cnpg-app   # nom du secret généré par CNPG
