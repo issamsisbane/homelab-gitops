@@ -8,7 +8,7 @@ spec:
     service:
       name: longhorn-frontend
       port:
-        name: 8000
+        name: "8000"
   ingressClassName: tailscale
   tls:
   - hosts:
