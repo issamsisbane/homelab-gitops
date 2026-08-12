@@ -126,6 +126,11 @@ data:
             icon: zigbee2mqtt.png
             siteMonitor: http://zigbee2mqtt.domotic.svc.cluster.local:8080/
             description: Zigbee2Mqtt 
+        - Microbin:
+            href: https://bin.issamhomelab.org/
+            icon: microbin.png
+            siteMonitor: https://bin.issamhomelab.org/
+            description: PasteBin Like
 
   widgets.yaml: |
     - kubernetes:
