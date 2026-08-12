@@ -8,7 +8,9 @@ metadata:
 spec:
   config:
     server:
-      root_url: "%(protocol)s://%(domain)s/"
+			domain: "grafana.tail7e39b9.ts.net"
+      root_url: "https://grafana.tail7e39b9.ts.net"
+      serve_from_sub_path: "false"
     auth:
       disable_login_form: "false"
     auth.generic_oauth:
