@@ -36,7 +36,9 @@ spec:
     auth.anonymous:
       enabled: "false"
     log:
-      level: warn
+      level: "debug"
+    log.filters:
+      "oauth.generic_oauth": "debug"
     analytics:
       reporting_enabled: "false"
       check_for_updates: "false"
