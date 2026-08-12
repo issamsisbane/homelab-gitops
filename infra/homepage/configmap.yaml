@@ -84,16 +84,31 @@ data:
             icon: authelia.png
             siteMonitor: https://auth.issamhomelab.org/
             description: SSO Provider
-        - Headlamp:
-            href: https://headlamp.issamhomelab.org/
-            icon: headlamp.png
-            siteMonitor: https://headlamp.issamhomelab.org/
-            description: Kubernetes Dashboard
         - ArgoCD:
             href: https://argocd.tail7e39b9.ts.net/
             icon: argo-cd.png
             siteMonitor: http://my-argo-cd-argocd-server.argocd.svc.cluster.local/
             description: Gitops
+        - Grafana:
+            href: https://grafana.tail7e39b9.ts.net/
+            icon: grafana.png
+            siteMonitor: http://grafana-service.observability.svc.cluster.local:3000/
+            description: Dashboards
+        - Headlamp:
+            href: https://headlamp.issamhomelab.org/
+            icon: headlamp.png
+            siteMonitor: https://headlamp.issamhomelab.org/
+            description: Kubernetes Dashboard
+        - Lldap:
+            href: https://lldap.tail7e39b9.ts.net/
+            icon: lldap.png
+            siteMonitor: http://lldap.lldap.svc.cluster.local:17170/
+            description: LDAP Provider
+        - Longhorn:
+            href: https://longhorn.tail7e39b9.ts.net/
+            icon: longhorn.png
+            siteMonitor: http://longhorn-frontend.longhorn.svc.cluster.local:8000/
+            description: Storage Provider
         - Openbao:
             href: https://openbao.tail7e39b9.ts.net/
             icon: openbao.png
