@@ -79,10 +79,10 @@ data:
               icon: mdi-book-open-variant-#ffffff
   services.yaml: |
     - Infrastructure:
-        - Authentik:
-            href: https://authentik.issamhomelab.org/
-            icon: authentik.png
-            siteMonitor: https://authentik.issamhomelab.org/
+        - Authelia:
+            href: https://auth.issamhomelab.org/
+            icon: authelia.png
+            siteMonitor: https://auth.issamhomelab.org/
             description: SSO Provider
         - Headlamp:
             href: https://headlamp.issamhomelab.org/
@@ -92,7 +92,7 @@ data:
         - ArgoCD:
             href: https://argocd.tail7e39b9.ts.net/
             icon: argo-cd.png
-            siteMonitor: https://argocd-server.argocd.svc.cluster.local/
+            siteMonitor: http://argocd-server.argocd.svc.cluster.local/
             description: Gitops
         - Openbao:
             href: https://openbao.tail7e39b9.ts.net/
@@ -106,11 +106,6 @@ data:
             icon: umami.png
             siteMonitor: https://analytics.issamhomelab.org/
             description: Site Analytics
-        - Zipline:
-            href: https://share.issamhomelab.org/
-            icon: zipline.png
-            siteMonitor: https://share.issamhomelab.org/
-            description: Share Txt - Url shortener 
         - Zigbee2Mqtt:
             href: https://zigbee2mqtt.tail7e39b9.ts.net/
             icon: zigbee2mqtt.png
