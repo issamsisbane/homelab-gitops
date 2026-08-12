@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microbin
+  namespace: microbin
+  labels:
+    app: microbin
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # important: un seul pod à la fois, car le volume est RWO
+  selector:
+    matchLabels:
+      app: microbin
+  template:
+    metadata:
+      labels:
+        app: microbin
+    spec:
+      containers:
+        - name: microbin
+          image: danielszabo99/microbin:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: microbin-admin
+          env:
+            - name: MICROBIN_PORT
+              value: "8080"
+            - name: MICROBIN_ENABLE_BURN_AFTER
+              value: "true"
+            - name: MICROBIN_DEFAULT_BURN_AFTER
+              value: "0"
+            - name: MICROBIN_DEFAULT_EXPIRY
+              value: "24hour"
+            - name: MICROBIN_NO_LISTING
+              value: "true"
+            - name: MICROBIN_QR
+              value: "true"
+            - name: TZ
+              value: "Europe/Paris"
+            - name: MICROBIN_DISABLE_TELEMETRY
+              value: "false"
+            - name: MICROBIN_HIDE_FOOTER
+              value: "true"
+          volumeMounts:
+            - name: data
+              mountPath: /app/microbin_data
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: microbin-data
