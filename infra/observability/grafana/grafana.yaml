@@ -7,6 +7,9 @@ metadata:
     dashboards: grafana
 spec:
   config:
+    database:
+			type: "postgres"
+      ssl_mode: "require"
     server:
       domain: "grafana.tail7e39b9.ts.net"
       root_url: "https://grafana.tail7e39b9.ts.net"
@@ -26,9 +29,10 @@ spec:
       email_attribute_path: "email"
       login_attribute_path: "preferred_username"
       use_pkce: "true"
+			allow_assign_grafana_admin: "true"
       name_attribute_path: "name"
       groups_attribute_path: "groups"
-      role_attribute_path: "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'"
+      role_attribute_path: "contains(groups[*], 'k8s-admins') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'"
     auth.anonymous:
       enabled: "false"
     log:
@@ -64,6 +68,26 @@ spec:
                     secretKeyRef:
                       name: grafana-oidc
                       key: client-secret
+								 name: GF_DATABASE_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-cnpg-app   # nom du secret généré par CNPG
+                      key: host
+                - name: GF_DATABASE_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-cnpg-app
+                      key: dbname
+                - name: GF_DATABASE_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-cnpg-app
+                      key: user
+                - name: GF_DATABASE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-cnpg-app
+                      key: password
               resources:
                 requests:
                   memory: "128Mi"
