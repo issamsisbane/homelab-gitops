@@ -32,7 +32,7 @@ spec:
       allow_assign_grafana_admin: "true"
       name_attribute_path: "name"
       groups_attribute_path: "groups"
-      role_attribute_path: "contains(groups[*], 'k8s-admins') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'"
+      role_attribute_path: "contains(groups[*], 'k8s-admins') && 'GrafanaAdmin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'"
     auth.anonymous:
       enabled: "false"
     log:

@@ -269,6 +269,7 @@ spec:
                     path: '/secrets/grafana/client_secret'
                   public: false
                   authorization_policy: 'one_factor'
+                  consent_mode: 'pre-configured'
                   require_pkce: true
                   pkce_challenge_method: 'S256'
                   redirect_uris:
