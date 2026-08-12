@@ -2,7 +2,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: grafana-cnpg
-  namespace: grafana
+  namespace: observability
 spec:
   instances: 2
   storage:
