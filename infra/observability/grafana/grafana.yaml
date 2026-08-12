@@ -11,6 +11,21 @@ spec:
       root_url: "%(protocol)s://%(domain)s/"
     auth:
       disable_login_form: "false"
+		auth.generic_oauth:
+      enabled: "true"
+      name: "Authelia SSO"
+      allow_sign_up: "true"
+      client_id: "${AUTH_CLIENT_ID}"
+      client_secret: "${AUTH_CLIENT_SECRET}"
+      scopes: "openid email profile groups"
+      auth_url: "https://auth.issamhomelab.org/api/oidc/authorization"
+      token_url: "https://auth.issamhomelab.org/api/oidc/token"
+      api_url: "https://auth.issamhomelab.org/api/oidc/userinfo"
+      email_attribute_path: "email"
+      login_attribute_path: "preferred_username"
+      name_attribute_path: "name"
+      groups_attribute_path: "groups"
+      role_attribute_path: "contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'grafana-editor') && 'Editor' || 'Viewer'"
     auth.anonymous:
       enabled: "false"
     log:
@@ -35,6 +50,17 @@ spec:
         spec:
           containers:
             - name: grafana
+							env:
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-oidc
+                      key: client-id
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-oidc
+                      key: client-secret
               resources:
                 requests:
                   memory: "128Mi"
