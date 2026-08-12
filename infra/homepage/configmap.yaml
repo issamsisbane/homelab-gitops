@@ -107,7 +107,7 @@ data:
         - Longhorn:
             href: https://longhorn.tail7e39b9.ts.net/
             icon: longhorn.png
-            siteMonitor: http://longhorn-frontend.longhorn.svc.cluster.local:8000/
+            siteMonitor: http://longhorn-frontend.longhorn.svc.cluster.local/
             description: Storage Provider
         - Openbao:
             href: https://openbao.tail7e39b9.ts.net/
