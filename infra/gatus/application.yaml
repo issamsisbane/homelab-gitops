@@ -53,6 +53,13 @@ spec:
             type: postgres
             path: "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
           endpoints:
+            - name: Zigbee2MQTT
+              group: apps
+              url: "https://zigbee2mqtt.tail7e39b9.ts.net"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
             - name: Microbin
               group: apps
               url: "https://bin.issamhomelab.org"
@@ -67,9 +74,44 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+            - name: argocd
+              group: infra
+              url: "https://argocd.tail7e39b9.ts.net"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
+            - name: homepage
+              group: infra
+              url: "https://home.issamhomelab.org"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
+            - name: openbao
+              group: infra
+              url: "https://openbao.tail7e39b9.ts.net"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
+            - name: grafana
+              group: infra
+              url: "https://grafana.tail7e39b9.ts.net"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
+            - name: headlamp
+              group: infra
+              url: "https://headlamp.issamhomelab.org"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
             - name: MASTER-1
               group: machines
-              url: "icmp://ih-node-3"
+              url: "tcp://192.168.1.17:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
@@ -83,7 +125,7 @@ spec:
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-2
               group: machines
-              url: "icmp://192.168.1.15"
+              url: "tcp://192.168.1.15:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
