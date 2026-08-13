@@ -77,7 +77,7 @@ spec:
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-2
               group: machines
-              url: "icmp://ih-node-2"
+              url: "icmp://192.168.1.15"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
