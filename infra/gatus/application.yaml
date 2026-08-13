@@ -15,6 +15,10 @@ spec:
 
     helm:
       values: |
+        securityContext:
+          capabilities:
+            add:
+              - NET_RAW
         env:
           GATUS_LOG_LEVEL:
             value: "DEBUG"
