@@ -15,13 +15,7 @@ spec:
 
     helm:
       values: |
-        securityContext:
-          capabilities:
-            add:
-              - NET_RAW
-              - CAP_NET_RAW
         env:
-          GATUS_LOG_LEVEL: "DEBUG"
           DB_HOST:
             valueFrom:
               secretKeyRef:
@@ -50,6 +44,8 @@ spec:
 
         config:
           ui:
+            default-sort-by: "group"
+            header: ""
             title: "Status - Issamhomelab"
             logo: ""
             dashboard-subheading: "Endpoints status in realtime"
@@ -58,77 +54,77 @@ spec:
             path: "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
           endpoints:
             - name: Zigbee2MQTT
-              group: apps
+              group: Apps
               url: "http://zigbee2mqtt.domotic.svc.cluster.local:8080"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
             - name: Microbin
-              group: apps
+              group: Apps
               url: "https://bin.issamhomelab.org"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
             - name: authelia
-              group: infra
+              group: Infra
               url: "https://auth.issamhomelab.org"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
             - name: argocd
-              group: infra
+              group: Infra
               url: "http://my-argo-cd-argocd-server.argocd.svc.cluster.local"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
             - name: homepage
-              group: infra
+              group: Infra
               url: "https://home.issamhomelab.org"
               interval: 30s
               conditions:
                 - "[STATUS] == 401"
                 - "[RESPONSE_TIME] < 300"
             - name: openbao
-              group: infra
+              group: Infra
               url: "http://openbao.openbao.svc.cluster.local:8200"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
             - name: grafana
-              group: infra
+              group: Infra
               url: "http://grafana-service.observability.svc.cluster.local:3000"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
             - name: headlamp
-              group: infra
+              group: Infra
               url: "https://headlamp.issamhomelab.org"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
             - name: MASTER-1
-              group: machines
+              group: Machines
               url: "tcp://ih-node-3:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-1
-              group: machines
+              group: Machines
               url: "tcp://ih-node-1:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-2
-              group: machines
+              group: Machines
               url: "tcp://192.168.1.16:22"
               interval: 30s
               conditions:
