@@ -9,7 +9,7 @@ data:
   kubernetes.yaml: |
     mode: cluster
   settings.yaml: |
-    title: "Homelab - Issam"
+    title: "Home - Issamhomelab"
     statusStyle: "dot"
     useEqualHeights: true
     background:
@@ -78,32 +78,39 @@ data:
               href: https://github.com/issamsisbane/cv/blob/main/build/cv-french.pdf
               icon: mdi-book-open-variant-#ffffff
   services.yaml: |
-    - Infrastructure:
+    - SSO:
         - Authelia:
             href: https://auth.issamhomelab.org/
             icon: authelia.png
             siteMonitor: https://auth.issamhomelab.org/
             description: SSO Provider
-        - ArgoCD:
-            href: https://argocd.tail7e39b9.ts.net/
-            icon: argo-cd.png
-            siteMonitor: http://my-argo-cd-argocd-server.argocd.svc.cluster.local/
-            description: Gitops
-        - Grafana:
-            href: https://grafana.tail7e39b9.ts.net/
-            icon: grafana.png
-            siteMonitor: http://grafana-service.observability.svc.cluster.local:3000/
-            description: Dashboards
-        - Headlamp:
-            href: https://headlamp.issamhomelab.org/
-            icon: headlamp.png
-            siteMonitor: https://headlamp.issamhomelab.org/
-            description: Kubernetes Dashboard
         - Lldap:
             href: https://lldap.tail7e39b9.ts.net/
             icon: lldap.png
             siteMonitor: http://lldap.lldap.svc.cluster.local:17170/
             description: LDAP Provider
+    - Observability:
+        - Gatus:
+            href: https://status.issamhomelab.org/
+            icon: gatus.png
+            siteMonitor: http://gatus.gatus.svc.cluster.local/
+            description: Health Monitor
+        - Grafana:
+            href: https://grafana.tail7e39b9.ts.net/
+            icon: grafana.png
+            siteMonitor: http://grafana-service.observability.svc.cluster.local:3000/
+            description: Dashboards
+    - Infrastructure:
+        - ArgoCD:
+            href: https://argocd.tail7e39b9.ts.net/
+            icon: argo-cd.png
+            siteMonitor: http://my-argo-cd-argocd-server.argocd.svc.cluster.local/
+            description: Gitops
+        - Headlamp:
+            href: https://headlamp.issamhomelab.org/
+            icon: headlamp.png
+            siteMonitor: https://headlamp.issamhomelab.org/
+            description: Kubernetes Dashboard
         - Longhorn:
             href: https://longhorn.tail7e39b9.ts.net/
             icon: longhorn.png
@@ -125,7 +132,7 @@ data:
             href: https://zigbee2mqtt.tail7e39b9.ts.net/
             icon: zigbee2mqtt.png
             siteMonitor: http://zigbee2mqtt.domotic.svc.cluster.local:8080/
-            description: Zigbee2Mqtt 
+            description: Zigbee2Mqtt
         - Microbin:
             href: https://bin.issamhomelab.org/
             icon: microbin.png
