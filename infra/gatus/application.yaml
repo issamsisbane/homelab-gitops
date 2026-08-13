@@ -76,7 +76,7 @@ spec:
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-1
               group: machines
-              url: "tcp://ih-node-1"
+              url: "tcp://192.168.1.16"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
