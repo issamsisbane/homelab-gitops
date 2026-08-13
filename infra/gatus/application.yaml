@@ -16,6 +16,8 @@ spec:
     helm:
       values: |
         env:
+          GATUS_LOG_LEVEL:
+            value: "DEBUG"
           DB_HOST:
             valueFrom:
               secretKeyRef:
@@ -70,7 +72,7 @@ spec:
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-1
               group: machines
-              url: "icmp://ih-node-1"
+              url: "tcp://ih-node-1"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
