@@ -47,12 +47,41 @@ spec:
             type: postgres
             path: "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
           endpoints:
+            - name: Microbin
+              group: apps
+              url: "https://bin.issamhomelab.org"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
             - name: authelia
+              group: infra
               url: "https://auth.issamhomelab.org"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+            - name: MASTER-1
+              group: machines
+              url: "icmp://ih-node-3"
+              interval: 30s
+              conditions:
+                - "[CONNECTED] == true"
+                - "[RESPONSE_TIME] < 200"
+            - name: WORKER-1
+              group: machines
+              url: "icmp://ih-node-1"
+              interval: 30s
+              conditions:
+                - "[CONNECTED] == true"
+                - "[RESPONSE_TIME] < 200"
+            - name: WORKER-2
+              group: machines
+              url: "icmp://ih-node-2"
+              interval: 30s
+              conditions:
+                - "[CONNECTED] == true"
+                - "[RESPONSE_TIME] < 200"
 
         persistence:
           enabled: false
