@@ -19,9 +19,9 @@ spec:
           capabilities:
             add:
               - NET_RAW
+              - CAP_NET_RAW
         env:
-          GATUS_LOG_LEVEL:
-            value: "DEBUG"
+          GATUS_LOG_LEVEL: "DEBUG"
           DB_HOST:
             valueFrom:
               secretKeyRef:
