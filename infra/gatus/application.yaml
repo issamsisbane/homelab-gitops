@@ -49,6 +49,10 @@ spec:
                 key: password
 
         config:
+          ui:
+            title: "Status - Issamhomelab"
+            logo: ""
+            dashboard-subheading: "Endpoints status in realtime"
           storage:
             type: postgres
             path: "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
@@ -125,7 +129,7 @@ spec:
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-2
               group: machines
-              url: "tcp://ih-node-2:22"
+              url: "tcp://192.168.1.16:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
