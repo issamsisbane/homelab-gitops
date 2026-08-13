@@ -86,7 +86,7 @@ spec:
               url: "https://home.issamhomelab.org"
               interval: 30s
               conditions:
-                - "[STATUS] == 200"
+                - "[STATUS] == 401"
                 - "[RESPONSE_TIME] < 300"
             - name: openbao
               group: infra
@@ -111,21 +111,21 @@ spec:
                 - "[RESPONSE_TIME] < 300"
             - name: MASTER-1
               group: machines
-              url: "tcp://192.168.1.17:22"
+              url: "tcp://ih-node-3:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-1
               group: machines
-              url: "tcp://192.168.1.16:22"
+              url: "tcp://ih-node-1:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
                 - "[RESPONSE_TIME] < 200"
             - name: WORKER-2
               group: machines
-              url: "tcp://192.168.1.15:22"
+              url: "tcp://ih-node-2:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
