@@ -1,0 +1,14 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: gatus-cnpg
+  namespace: gatus
+spec:
+  instances: 2
+  storage:
+    size: 10Gi
+
+  bootstrap:
+    initdb:
+      database: gatus
+      owner: gatus

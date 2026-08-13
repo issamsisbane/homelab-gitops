@@ -1,0 +1,27 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: gatus
+  namespace: gatus
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "status.issamhomelab.org"
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: traefik
+      sectionName: https
+
+  hostnames:
+    - "status.issamhomelab.org"
+
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: gatus
+          namespace: gatus
+          port: 80
+
