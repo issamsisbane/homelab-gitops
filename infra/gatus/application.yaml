@@ -19,12 +19,12 @@ spec:
           MATRIX_ACCESS_TOKEN:
             valueFrom:
               secretKeyRef:
-                name: gatus-matrix-secret
+                name: gatus-matrix
                 key: access-token
           MATRIX_STATUS_ROOM_ID:
             valueFrom:
               secretKeyRef:
-                name: gatus-matrix-secret
+                name: gatus-matrix
                 key: status-room-id
           DB_HOST:
             valueFrom:
