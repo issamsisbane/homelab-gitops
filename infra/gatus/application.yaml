@@ -126,7 +126,7 @@ spec:
                 - "[RESPONSE_TIME] < 300"
             - name: MASTER-1
               group: Machines
-              url: "tcp://ih-node-3:22"
+              url: "tcp://ih-node-34:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
