@@ -16,6 +16,16 @@ spec:
     helm:
       values: |
         env:
+          MATRIX_ACCESS_TOKEN:
+            valueFrom:
+              secretKeyRef:
+                name: gatus-matrix-secret
+                key: access-token
+          MATRIX_STATUS_ROOM_ID:
+            valueFrom:
+              secretKeyRef:
+                name: gatus-matrix-secret
+                key: status-room-id
           DB_HOST:
             valueFrom:
               secretKeyRef:
@@ -43,6 +53,11 @@ spec:
                 key: password
 
         config:
+          alerting:
+            matrix:
+              server-url: "https://matrix.issamhomelab.org"
+              access-token: "${MATRIX_ACCESS_TOKEN}"
+              internal-room-id: "${MATRIX_STATUS_ROOM_ID}"
           ui:
             default-sort-by: "group"
             header: ""
@@ -116,6 +131,10 @@ spec:
               conditions:
                 - "[CONNECTED] == true"
                 - "[RESPONSE_TIME] < 200"
+              alerts:
+                - type: matrix
+                  description: "Master-1 is down.."
+                  send-on-resolved: true
             - name: WORKER-1
               group: Machines
               url: "tcp://ih-node-1:22"
