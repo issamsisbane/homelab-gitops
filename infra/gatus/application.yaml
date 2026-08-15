@@ -16,6 +16,8 @@ spec:
     helm:
       values: |
         env:
+          GATUS_LOG_LEVEL:
+            value: "DEBUG"
           MATRIX_ACCESS_TOKEN:
             valueFrom:
               secretKeyRef:
