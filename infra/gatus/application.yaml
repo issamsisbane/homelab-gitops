@@ -16,17 +16,11 @@ spec:
     helm:
       values: |
         env:
-          GATUS_LOG_LEVEL: "DEBUG"
           MATRIX_ACCESS_TOKEN:
             valueFrom:
               secretKeyRef:
                 name: gatus-matrix
                 key: access-token
-          MATRIX_STATUS_ROOM_ID:
-            valueFrom:
-              secretKeyRef:
-                name: gatus-matrix
-                key: status-room-id
           DB_HOST:
             valueFrom:
               secretKeyRef:
@@ -76,6 +70,10 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<App> Zigbee2MQTT is down.."
+                  send-on-resolved: true
             - name: Microbin
               group: Apps
               url: "https://bin.issamhomelab.org"
@@ -83,6 +81,10 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<App> Microbin is down.."
+                  send-on-resolved: true
             - name: authelia
               group: Infra
               url: "https://auth.issamhomelab.org"
@@ -90,6 +92,10 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<Infra> Authelia is down.."
+                  send-on-resolved: true
             - name: argocd
               group: Infra
               url: "http://my-argo-cd-argocd-server.argocd.svc.cluster.local"
@@ -97,6 +103,10 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<Infra> ArgoCD is down.."
+                  send-on-resolved: true
             - name: homepage
               group: Infra
               url: "https://home.issamhomelab.org"
@@ -104,6 +114,10 @@ spec:
               conditions:
                 - "[STATUS] == 401"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<Infra> Homepage is down.."
+                  send-on-resolved: true
             - name: openbao
               group: Infra
               url: "http://openbao.openbao.svc.cluster.local:8200"
@@ -111,6 +125,10 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<Infra> Openbao is down.."
+                  send-on-resolved: true
             - name: grafana
               group: Infra
               url: "http://grafana-service.observability.svc.cluster.local:3000"
@@ -118,6 +136,10 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<Infra> Grafana is down.."
+                  send-on-resolved: true
             - name: headlamp
               group: Infra
               url: "https://headlamp.issamhomelab.org"
@@ -125,6 +147,10 @@ spec:
               conditions:
                 - "[STATUS] == 200"
                 - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<Infra> Headlamp is down.."
+                  send-on-resolved: true
             - name: MASTER-1
               group: Machines
               url: "tcp://192.168.1.17:22"
@@ -134,7 +160,7 @@ spec:
                 - "[RESPONSE_TIME] < 200"
               alerts:
                 - type: matrix
-                  description: "Master-1 is down.."
+                  description: "<Node> MASTER-1 is down.."
                   send-on-resolved: true
             - name: WORKER-1
               group: Machines
@@ -143,6 +169,10 @@ spec:
               conditions:
                 - "[CONNECTED] == true"
                 - "[RESPONSE_TIME] < 200"
+              alerts:
+                - type: matrix
+                  description: "<Node> WORKER-1 is down.."
+                  send-on-resolved: true
             - name: WORKER-2
               group: Machines
               url: "tcp://192.168.1.16:22"
@@ -150,6 +180,10 @@ spec:
               conditions:
                 - "[CONNECTED] == true"
                 - "[RESPONSE_TIME] < 200"
+              alerts:
+                - type: matrix
+                  description: "<Node> WORKER-2 is down.."
+                  send-on-resolved: true
 
         persistence:
           enabled: false
