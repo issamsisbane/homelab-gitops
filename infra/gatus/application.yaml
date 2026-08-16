@@ -57,8 +57,8 @@ spec:
           alerting:
             matrix:
               server-url: "https://matrix.issamhomelab.org"
-              access-token: '${MATRIX_ACCESS_TOKEN}'
-              internal-room-id: '${MATRIX_STATUS_ROOM_ID}'
+              access-token: "${MATRIX_ACCESS_TOKEN}"
+              internal-room-id: "!cztN3rw9IBQA6Xu2sw:matrix.issamhomelab.org"
           ui:
             default-sort-by: "group"
             header: ""
@@ -127,7 +127,7 @@ spec:
                 - "[RESPONSE_TIME] < 300"
             - name: MASTER-1
               group: Machines
-              url: "tcp://ih-node-34:22"
+              url: "tcp://192.168.1.17:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
@@ -138,7 +138,7 @@ spec:
                   send-on-resolved: true
             - name: WORKER-1
               group: Machines
-              url: "tcp://ih-node-1:22"
+              url: "tcp://192.168.1.15:22"
               interval: 30s
               conditions:
                 - "[CONNECTED] == true"
