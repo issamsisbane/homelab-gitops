@@ -85,6 +85,17 @@ spec:
                 - type: matrix
                   description: "<App> Microbin is down.."
                   send-on-resolved: true
+            - name: Readeck
+              group: Apps
+              url: "https://read.issamhomelab.org"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 300"
+              alerts:
+                - type: matrix
+                  description: "<App> Readeck is down.."
+                  send-on-resolved: true
             - name: authelia
               group: Infra
               url: "https://auth.issamhomelab.org"

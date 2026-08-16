@@ -78,6 +78,27 @@ data:
               href: https://github.com/issamsisbane/cv/blob/main/build/cv-french.pdf
               icon: mdi-book-open-variant-#ffffff
   services.yaml: |
+    - Apps:
+        - Microbin:
+            href: https://bin.issamhomelab.org/
+            icon: microbin.png
+            siteMonitor: https://bin.issamhomelab.org/
+            description: PasteBin Like
+        - Readeck:
+            href: https://read.issamhomelab.org/
+            icon: readeck.png
+            siteMonitor: https://read.issamhomelab.org/
+            description: Bookmarks manager
+        - Umami:
+            href: https://analytics.issamhomelab.org/
+            icon: umami.png
+            siteMonitor: https://analytics.issamhomelab.org/
+            description: Site Analytics
+        - Zigbee2Mqtt:
+            href: https://zigbee2mqtt.tail7e39b9.ts.net/
+            icon: zigbee2mqtt.png
+            siteMonitor: http://zigbee2mqtt.domotic.svc.cluster.local:8080/
+            description: Zigbee2Mqtt
     - SSO:
         - Authelia:
             href: https://auth.issamhomelab.org/
@@ -122,22 +143,6 @@ data:
             siteMonitor: http://openbao.openbao.svc.cluster.local:8200/
             description: Secret Manager
 
-    - Apps:
-        - Umami:
-            href: https://analytics.issamhomelab.org/
-            icon: umami.png
-            siteMonitor: https://analytics.issamhomelab.org/
-            description: Site Analytics
-        - Zigbee2Mqtt:
-            href: https://zigbee2mqtt.tail7e39b9.ts.net/
-            icon: zigbee2mqtt.png
-            siteMonitor: http://zigbee2mqtt.domotic.svc.cluster.local:8080/
-            description: Zigbee2Mqtt
-        - Microbin:
-            href: https://bin.issamhomelab.org/
-            icon: microbin.png
-            siteMonitor: https://bin.issamhomelab.org/
-            description: PasteBin Like
 
   widgets.yaml: |
     - kubernetes:
