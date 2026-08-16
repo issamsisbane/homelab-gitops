@@ -121,6 +121,11 @@ data:
             icon: grafana.png
             siteMonitor: http://grafana-service.observability.svc.cluster.local:3000/
             description: Dashboards
+        - Element:
+            href: https://app.element.io/
+            icon: element.png
+            siteMonitor: http://app.element.io/
+            description: Matrix Chat
     - Infrastructure:
         - ArgoCD:
             href: https://argocd.tail7e39b9.ts.net/
