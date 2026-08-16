@@ -15,9 +15,9 @@ Kubernetes homelab managed declaratively with ArgoCD using the app-of-apps patte
 | Auth (SSO) | Authelia (OIDC) |
 | Secrets | OpenBao + ExternalSecrets |
 | Block storage | Longhorn |
-| Object storage | SeaweedFS (S3-compatible) |
 | Databases | CloudNative PG (PostgreSQL operator) |
 | Observability | Prometheus · Loki · Grafana · Alloy |
+| Status | Gatus |
 
 ## Repository Layout
 
@@ -44,6 +44,7 @@ ArgoCD watches `main` and reconciles continuously. Infra deletions are intention
 | `cnpg` | CloudNative PG operator for declarative PostgreSQL clusters |
 | `external-dns` | Syncs DNS records from Kubernetes resources |
 | `external-secrets` | Pulls secrets from OpenBao into Kubernetes Secrets |
+| `gatus` | Query each service to monitor their status |
 | `headlamp` | Kubernetes dashboard with OIDC login |
 | `homepage` | Self-hosted portal with cluster status widgets |
 | `kubernetes-replicator` | Replicates Secrets and ConfigMaps across namespaces |
@@ -57,7 +58,7 @@ ArgoCD watches `main` and reconciles continuously. Infra deletions are intention
 
 | App | Purpose |
 |---|---|
-| `zipline` | File sharing and URL shortening |
+| `microbin` | File sharing and URL shortening |
 | `domotic` | Home automation — Mosquitto (MQTT broker) + Zigbee2MQTT |
 
 ## Networking
@@ -106,7 +107,8 @@ Each app defines an `ExternalSecret` resource that references a path in OpenBao.
 | Homepage | `home.issamhomelab.org` |
 | Authelia (SSO) | `auth.issamhomelab.org` |
 | Headlamp (K8s UI) | `headlamp.issamhomelab.org` |
-| Zipline (file share) | `share.issamhomelab.org` |
+| Microbin (file share) | `bin.issamhomelab.org` |
+| Gatus (status page)| `status.issamhomelab.org` |
 
 ### Private (Tailscale — `tail7e39b9.ts.net`)
 
@@ -115,3 +117,4 @@ Each app defines an `ExternalSecret` resource that references a path in OpenBao.
 | ArgoCD | `argocd.tail7e39b9.ts.net` |
 | OpenBao | `openbao.tail7e39b9.ts.net` |
 | Zigbee2MQTT | `zigbee2mqtt.tail7e39b9.ts.net` |
+| Grafana | `grafana.tail7e39b9.ts.net` |
