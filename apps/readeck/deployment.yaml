@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readeck
+  namespace: readeck
+  labels:
+    app: readeck
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: readeck
+  template:
+    metadata:
+      labels:
+        app: readeck
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: readeck
+          image: codeberg.org/readeck/readeck:latest
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-cnpg-app
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-cnpg-app
+                  key: password
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-cnpg-app
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-cnpg-app
+                  key: port
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-cnpg-app
+                  key: dbname
+
+            - name: READECK_DATABASE_SOURCE
+              value: "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)"
+
+            - name: READECK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-secret
+                  key: secret-key
+
+            - name: READECK_LOG_LEVEL
+              value: "info"
+            - name: READECK_SERVER_HOST
+              value: "0.0.0.0"
+            - name: READECK_SERVER_PORT
+              value: "8000"
+            - name: READECK_SERVER_PREFIX
+              value: "/"
+            - name: READECK_ALLOWED_HOSTS
+              value: "read.issamhomelab.org"
+
+          volumeMounts:
+            - name: readeck-data
+              mountPath: /readeck
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+
+          readinessProbe:
+            exec:
+              command: ["/bin/readeck", "healthcheck", "-config", "config.toml"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+
+          livenessProbe:
+            exec:
+              command: ["/bin/readeck", "healthcheck", "-config", "config.toml"]
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 3
+
+      volumes:
+        - name: readeck-data
+          persistentVolumeClaim:
+            claimName: readeck-data
