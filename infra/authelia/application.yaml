@@ -18,6 +18,9 @@ spec:
       values: |
         pod:
           extraVolumeMounts:
+            - name: readeck-oidc-secret
+              mountPath: /secrets/readeck
+              readOnly: true
             - name: grafana-oidc-secret
               mountPath: /secrets/grafana
               readOnly: true
@@ -35,6 +38,12 @@ spec:
               readOnly: true
 
           extraVolumes:
+            - name: readeck-oidc-secret
+              secret:
+                secretName: authelia-secrets
+                items:
+                  - key: readeck_client_secret_hash
+                    path: client_secret
             - name: grafana-oidc-secret
               secret:
                 secretName: authelia-secrets
@@ -292,6 +301,26 @@ spec:
                   access_token_signed_response_alg: 'none'
                   userinfo_signed_response_alg: 'none'
                   token_endpoint_auth_method: 'client_secret_basic'
+                - client_id: 'readeck'
+                  client_name: 'Readeck'
+                  client_secret:
+                    path: '/secrets/readeck/client_secret'
+                  public: false
+                  authorization_policy: 'one_factor'
+                  consent_mode: 'pre-configured'
+                  require_pkce: false
+                  redirect_uris:
+                    - 'https://read.issamhomelab.org/login/oidc'
+                  scopes:
+                    - 'openid'
+                    - 'profile'
+                    - 'groups'
+                    - 'email'
+                  response_types:
+                    - 'code'
+                  grant_types:
+                    - 'authorization_code'
+                  userinfo_signed_response_alg: 'none'
 
         secret:
           existingSecret: authelia-secrets

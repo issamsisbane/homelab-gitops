@@ -72,6 +72,23 @@ spec:
             - name: READECK_ALLOWED_HOSTS
               value: "read.issamhomelab.org"
 
+            - name: READECK_AUTH_OIDC_PROVIDERS_0_NAME
+              value: "Authelia"
+            - name: READECK_AUTH_OIDC_PROVIDERS_0_URL
+              value: "https://auth.issamhomelab.org"
+            - name: READECK_AUTH_OIDC_PROVIDERS_0_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-secret
+                  key: oidc-client-id
+            - name: READECK_AUTH_OIDC_PROVIDERS_0_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: readeck-secret
+                  key: oidc-client-secret
+            - name: READECK_AUTH_OIDC_PROVIDERS_0_PROVISIONING
+              value: "true"
+
           volumeMounts:
             - name: readeck-data
               mountPath: /readeck
