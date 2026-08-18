@@ -89,6 +89,11 @@ data:
             icon: readeck.png
             siteMonitor: https://read.issamhomelab.org/
             description: Bookmarks manager
+        - Miniflux:
+            href: https://rss.issamhomelab.org/
+            icon: miniflux.png
+            siteMonitor: https://rss.issamhomelab.org/
+            description: RSS Agregator
         - Umami:
             href: https://analytics.issamhomelab.org/
             icon: umami.png

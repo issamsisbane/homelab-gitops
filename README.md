@@ -60,6 +60,10 @@ ArgoCD watches `main` and reconciles continuously. Infra deletions are intention
 |---|---|
 | `microbin` | File sharing and URL shortening |
 | `domotic` | Home automation — Mosquitto (MQTT broker) + Zigbee2MQTT |
+| `readeck` | Read-it-later and bookmarks manager |
+| `miniflux` | RSS Agregator |
+| `microbin` | Pastebin like |
+
 
 ## Networking
 
