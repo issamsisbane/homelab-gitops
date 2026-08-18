@@ -18,6 +18,9 @@ spec:
       values: |
         pod:
           extraVolumeMounts:
+            - name: miniflux-oidc-secret
+              mountPath: /secrets/miniflux
+              readOnly: true
             - name: readeck-oidc-secret
               mountPath: /secrets/readeck
               readOnly: true
@@ -38,6 +41,12 @@ spec:
               readOnly: true
 
           extraVolumes:
+            - name: miniflux-oidc-secret
+              secret:
+                secretName: authelia-secrets
+                items:
+                  - key: miniflux_client_secret_hash
+                    path: client_secret
             - name: readeck-oidc-secret
               secret:
                 secretName: authelia-secrets
@@ -321,6 +330,28 @@ spec:
                   grant_types:
                     - 'authorization_code'
                   userinfo_signed_response_alg: 'none'
+                - client_id: 'miniflux'
+                  client_name: 'Miniflux'
+                  client_secret:
+                    path: '/secrets/miniflux/client_secret'
+                  public: false
+                  authorization_policy: 'one_factor'
+                  consent_mode: 'pre-configured'
+                  require_pkce: false
+                  redirect_uris:
+                    - 'https://rss.issamhomelab.org/oauth2/oidc/callback'
+                  scopes:
+                    - 'openid'
+                    - 'profile'
+                    - 'groups'
+                    - 'email'
+                  response_types:
+                    - 'code'
+                  grant_types:
+                    - 'authorization_code'
+                  access_token_signed_response_alg: 'none'
+                  userinfo_signed_response_alg: 'none'
+                  token_endpoint_auth_method: 'client_secret_basic'
 
         secret:
           existingSecret: authelia-secrets

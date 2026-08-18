@@ -61,16 +61,38 @@ spec:
             - name: ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: miniflux-admin
+                  name: miniflux-secret
                   key: username
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: miniflux-admin
+                  name: miniflux-secret
                   key: password
 
             - name: LISTEN_ADDR
               value: "0.0.0.0:8080"
+
+            - name: OAUTH2_PROVIDER
+              value: "oidc"
+            - name: OAUTH2_OIDC_PROVIDER_NAME
+              value: "Authelia"
+            - name: OAUTH2_OIDC_DISCOVERY_ENDPOINT
+              value: "https://auth.issamhomelab.org"   # <-- URL racine de ton instance Authelia, SANS le .well-known
+            - name: OAUTH2_REDIRECT_URL
+              value: "https://rss.issamhomelab.org/oauth2/oidc/callback"   # <-- à adapter à ton hostname réel
+            - name: OAUTH2_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux-secret
+                  key: oidc-client-id
+            - name: OAUTH2_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux-secret
+                  key: oidc-client-secret
+            - name: OAUTH2_USER_CREATION
+              value: "1"   # crée automatiquement l'utilisateur Miniflux au premier login OIDC
+
 
           resources:
             requests:
