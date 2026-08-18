@@ -195,6 +195,17 @@ spec:
                 - type: matrix
                   description: "<Node> WORKER-2 is down.."
                   send-on-resolved: true
+            - name: WORKER-3
+              group: Machines
+              url: "tcp://192.168.1.18:22"
+              interval: 30s
+              conditions:
+                - "[CONNECTED] == true"
+                - "[RESPONSE_TIME] < 200"
+              alerts:
+                - type: matrix
+                  description: "<Node> WORKER-3 is down.."
+                  send-on-resolved: true
 
         persistence:
           enabled: false
