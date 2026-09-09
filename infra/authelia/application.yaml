@@ -365,8 +365,8 @@ spec:
                   client_name: 'Forgejo'
                   client_secret:
                     path: '/secrets/forgejo/client_secret'
-									require_pkce: true
-									pkce_challenge_method: 'S256'
+                  require_pkce: true
+                  pkce_challenge_method: 'S256'
                   public: false
                   authorization_policy: 'one_factor'
                   consent_mode: 'pre-configured'
