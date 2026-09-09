@@ -1,0 +1,134 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: forgejo
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    workload-type: apps
+spec:
+  project: apps
+
+  source:
+    repoURL: oci://code.forgejo.org/forgejo-helm/forgejo
+    path: .
+    targetRevision: "17.1.5"
+    helm:
+      values: |
+        # Default values for gitea.
+        #
+        ## @param namespaceOverride String to fully override common.names.namespace
+        ##
+        namespaceOverride: 'forgejo'
+
+        ## @param replicaCount number of replicas for the deployment
+        replicaCount: 1
+
+        strategy:
+          type: 'RollingUpdate'
+          rollingUpdate:
+            maxSurge: '100%'
+            maxUnavailable: 0
+
+        image:
+          registry: code.forgejo.org
+          repository: forgejo/forgejo
+          pullPolicy: IfNotPresent
+          rootless: true
+
+          http:
+            type: ClusterIP
+            port: 3000
+
+        ## @section deployment
+        #
+        ## @param resources Kubernetes resources
+        resources: {}
+          # We usually recommend not to specify default resources and to leave this as a conscious
+          # choice for the user. This also increases chances charts run on environments with little
+          # resources, such as Minikube. If you do want to specify resources, uncomment the following
+          # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+          # limits:
+          #   cpu: 100m
+          #   memory: 128Mi
+          # requests:
+          #   cpu: 100m
+          #   memory: 128Mi
+
+        persistence:
+          enabled: true
+          create: true
+          mount: true
+          claimName: gitea-shared-storage
+          size: 20Gi
+          accessModes:
+            - ReadWriteOnce
+
+        initContainers:
+          resources:
+            limits: {}
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+        ## @section Gitea
+        #
+        gitea:
+          oauth:
+            - name: 'authelia'
+              provider: 'openidConnect'
+              existingSecret: forgejo-oidc-secret
+              autoDiscoverUrl: 'https://auth.issamhomelab.org/.well-known/openid-configuration'
+
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+              namespace: 'forgejo'
+
+          additionalConfigFromEnvs:
+            - name: FORGEJO__DATABASE__PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-cnpg-app
+                  key: password
+            - name: FORGEJO__DATABASE__NAME
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-cnpg-app
+                  key: dbname
+            - name: FORGEJO__DATABASE__USER
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-cnpg-app
+                  key: user
+            - name: FORGEJO__DATABASE__HOST
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-cnpg-app
+                  key: host
+            - name: FORGEJO__DATABASE__DB_TYPE
+              value: postgres
+
+          config:
+            APP_NAME: 'Forgejo: Beyond coding. We forge.'
+            RUN_MODE: prod
+            server:
+              SSH_LISTEN_PORT: 2222 # rootless image
+              START_SSH_SERVER: false
+              ROOT_URL: "https://git.issamhomelab.org"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: forgejo
+
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
