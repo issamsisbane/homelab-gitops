@@ -79,6 +79,11 @@ data:
               icon: mdi-book-open-variant-#ffffff
   services.yaml: |
     - Apps:
+        - Forgejo:
+            href: https://git.issamhomelab.org/
+            icon: forgejo.png
+            siteMonitor: https://git.issamhomelab.org/
+            description: Git Forgejo
         - Microbin:
             href: https://bin.issamhomelab.org/
             icon: microbin.png

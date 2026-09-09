@@ -63,13 +63,24 @@ spec:
             type: postgres
             path: "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require"
           endpoints:
+            - name: Forgejo
+              group: Apps
+              url: "http://git.issamhomelab.org"
+              interval: 30s
+              conditions:
+                - "[STATUS] == 200"
+                - "[RESPONSE_TIME] < 500"
+              alerts:
+                - type: matrix
+                  description: "<App> Forgejo is down.."
+                  send-on-resolved: true
             - name: Zigbee2MQTT
               group: Apps
               url: "http://zigbee2mqtt.domotic.svc.cluster.local:8080"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<App> Zigbee2MQTT is down.."
@@ -80,7 +91,7 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<App> Microbin is down.."
@@ -91,7 +102,7 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<App> Readeck is down.."
@@ -102,7 +113,7 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<App> Miniflux is down.."
@@ -113,7 +124,7 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<Infra> Authelia is down.."
@@ -124,7 +135,7 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<Infra> ArgoCD is down.."
@@ -135,7 +146,7 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 401"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<Infra> Homepage is down.."
@@ -146,18 +157,18 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<Infra> Openbao is down.."
                   send-on-resolved: true
             - name: grafana
               group: Infra
-              url: "http://grafana-service.observability.svc.cluster.local:3000"
+              url: "http://grafana-service.observability.svc.cluster.local:5000"
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<Infra> Grafana is down.."
@@ -168,7 +179,7 @@ spec:
               interval: 30s
               conditions:
                 - "[STATUS] == 200"
-                - "[RESPONSE_TIME] < 300"
+                - "[RESPONSE_TIME] < 500"
               alerts:
                 - type: matrix
                   description: "<Infra> Headlamp is down.."
