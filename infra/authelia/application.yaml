@@ -372,7 +372,7 @@ spec:
                   consent_mode: 'pre-configured'
                   require_pkce: false
                   redirect_uris:
-                    - 'https://git.issamhomelab.org/oauth2/oidc/callback'
+                    - 'https://git.issamhomelab.org/user/oauth2/authelia/callback'
                   scopes:
                     - 'openid'
                     - 'profile'
