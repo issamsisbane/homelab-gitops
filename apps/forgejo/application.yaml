@@ -80,6 +80,9 @@ spec:
               provider: 'openidConnect'
               existingSecret: forgejo-oidc-secret
               autoDiscoverUrl: 'https://auth.issamhomelab.org/.well-known/openid-configuration'
+							scopes: 'openid email profile groups'
+							groupClaimName: 'groups'
+							adminGroup: 'k8s-admins'
 
           metrics:
             enabled: true
