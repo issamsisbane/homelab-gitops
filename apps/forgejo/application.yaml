@@ -119,6 +119,7 @@ spec:
               START_SSH_SERVER: false
               ROOT_URL: "https://git.issamhomelab.org"
               MAX_UPLOAD_SIZE: 512
+              START_LFS_SERVER: true
 
   destination:
     server: https://kubernetes.default.svc
