@@ -7,7 +7,7 @@ data:
   config.yaml: |
     tunnel: be2b10f4-9398-4de6-9e65-f42bc07c5473
     credentials-file: /etc/cloudflared-credentials/credentials.json
-
+    protocol: http2
     ingress:
       - service: https://traefik.traefik.svc.cluster.local:443
         originRequest:
