@@ -12,9 +12,10 @@ data:
       - service: https://traefik.traefik.svc.cluster.local:443
         originRequest:
           noTLSVerify: true
-          connectTimeout: 30s
+          connectTimeout: 60s
           tlsTimeout: 30s
           tcpKeepAlive: 30s
+          keepAliveTimeout: 90s
 
     loglevel: info
     logfile: ""
