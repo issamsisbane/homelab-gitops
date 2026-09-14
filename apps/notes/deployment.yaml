@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garden
+  namespace: notes
+  labels:
+    app: garden
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garden
+  template:
+    metadata:
+      labels:
+        app: garden
+    spec:
+      nodeName: ih-node-4
+      containers:
+        - name: quartz
+          image: ghcr.io/issamsisbane/garden:3455729333be2d79fb7b8b54314e043a8cdb1287
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 20
